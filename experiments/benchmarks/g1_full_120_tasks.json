@@ -1,0 +1,3597 @@
+[
+  {
+    "task_id": "cg_001",
+    "task_type": "code_generation",
+    "name": "快速排序实现",
+    "description": "实现Python快速排序函数",
+    "requirement": "写一个Python函数实现快速排序，支持整数列表排序，返回升序排列结果",
+    "test_cases": [
+      {
+        "input": [
+          3,
+          1,
+          4,
+          1,
+          5,
+          9,
+          2,
+          6
+        ],
+        "expected": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          9
+        ]
+      },
+      {
+        "input": [],
+        "expected": []
+      },
+      {
+        "input": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ],
+        "expected": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "排序"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_002",
+    "task_type": "code_generation",
+    "name": "斐波那契数列",
+    "description": "实现斐波那契数列计算函数",
+    "requirement": "写一个Python函数计算第n个斐波那契数，n从0开始，F(0)=0, F(1)=1",
+    "test_cases": [
+      {
+        "input": 0,
+        "expected": 0
+      },
+      {
+        "input": 1,
+        "expected": 1
+      },
+      {
+        "input": 10,
+        "expected": 55
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "算法"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_003",
+    "task_type": "code_generation",
+    "name": "二分查找",
+    "description": "实现二分查找算法",
+    "requirement": "实现一个二分查找函数，在已排序列表中查找目标元素，返回索引或-1",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          3
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          6
+        ],
+        "expected": -1
+      },
+      {
+        "input": [
+          [],
+          1
+        ],
+        "expected": -1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "查找"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_004",
+    "task_type": "code_generation",
+    "name": "链表反转",
+    "description": "实现单链表反转",
+    "requirement": "实现一个函数反转单链表，返回反转后的头节点",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "expected": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      {
+        "input": [
+          1
+        ],
+        "expected": [
+          1
+        ]
+      },
+      {
+        "input": [],
+        "expected": []
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "链表"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_005",
+    "task_type": "code_generation",
+    "name": "字符串反转",
+    "description": "实现字符串反转函数",
+    "requirement": "实现一个函数反转输入字符串，不使用内置reverse方法",
+    "test_cases": [
+      {
+        "input": "hello",
+        "expected": "olleh"
+      },
+      {
+        "input": "a",
+        "expected": "a"
+      },
+      {
+        "input": "",
+        "expected": ""
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "字符串"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_006",
+    "task_type": "code_generation",
+    "name": "判断回文数",
+    "description": "判断一个整数是否为回文数",
+    "requirement": "实现函数判断整数是否为回文数（正读和倒读相同），负数返回False",
+    "test_cases": [
+      {
+        "input": 121,
+        "expected": true
+      },
+      {
+        "input": -121,
+        "expected": false
+      },
+      {
+        "input": 10,
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "数学"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_007",
+    "task_type": "code_generation",
+    "name": "两数之和",
+    "description": "查找数组中两数之和为目标值的索引",
+    "requirement": "给定整数数组和目标值，返回两个数的索引使得它们的和为目标值",
+    "test_cases": [
+      {
+        "input": [
+          [
+            2,
+            7,
+            11,
+            15
+          ],
+          9
+        ],
+        "expected": [
+          0,
+          1
+        ]
+      },
+      {
+        "input": [
+          [
+            3,
+            2,
+            4
+          ],
+          6
+        ],
+        "expected": [
+          1,
+          2
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "数组"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_008",
+    "task_type": "code_generation",
+    "name": "合并两个有序链表",
+    "description": "合并两个有序链表",
+    "requirement": "实现函数合并两个有序链表，返回合并后的有序链表",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            1,
+            3,
+            4
+          ]
+        ],
+        "expected": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          4
+        ]
+      },
+      {
+        "input": [
+          [],
+          []
+        ],
+        "expected": []
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "链表"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_009",
+    "task_type": "code_generation",
+    "name": "最大子数组和",
+    "description": "求解最大子数组和",
+    "requirement": "给定整数数组，找到连续子数组的最大和",
+    "test_cases": [
+      {
+        "input": [
+          -2,
+          1,
+          -3,
+          4,
+          -1,
+          2,
+          1,
+          -5,
+          4
+        ],
+        "expected": 6
+      },
+      {
+        "input": [
+          1
+        ],
+        "expected": 1
+      },
+      {
+        "input": [
+          5,
+          4,
+          -1,
+          7,
+          8
+        ],
+        "expected": 23
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "动态规划"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_010",
+    "task_type": "code_generation",
+    "name": "有效的括号",
+    "description": "判断括号字符串是否有效",
+    "requirement": "判断给定字符串中的括号是否匹配有效：()[]{}",
+    "test_cases": [
+      {
+        "input": "()",
+        "expected": true
+      },
+      {
+        "input": "()[]{}",
+        "expected": true
+      },
+      {
+        "input": "(]",
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "栈"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_011",
+    "task_type": "code_generation",
+    "name": "删除排序数组中的重复项",
+    "description": "删除有序数组中的重复项",
+    "requirement": "原地删除有序数组中的重复项，返回新长度",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          1,
+          2
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          0,
+          0,
+          1,
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4
+        ],
+        "expected": 5
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "数组",
+      "双指针"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_012",
+    "task_type": "code_generation",
+    "name": "爬楼梯",
+    "description": "爬楼梯问题",
+    "requirement": "有n阶楼梯，每次可爬1或2阶，求爬到顶的不同方法数",
+    "test_cases": [
+      {
+        "input": 2,
+        "expected": 2
+      },
+      {
+        "input": 3,
+        "expected": 3
+      },
+      {
+        "input": 4,
+        "expected": 5
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "动态规划"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_013",
+    "task_type": "code_generation",
+    "name": "反转整数",
+    "description": "反转整数数字",
+    "requirement": "反转整数数字，超出32位整数范围返回0",
+    "test_cases": [
+      {
+        "input": 123,
+        "expected": 321
+      },
+      {
+        "input": -123,
+        "expected": -321
+      },
+      {
+        "input": 120,
+        "expected": 21
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "数学"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_014",
+    "task_type": "code_generation",
+    "name": "实现strStr",
+    "description": "字符串匹配查找子串",
+    "requirement": "实现strStr函数，返回子串首次出现位置，不存在返回-1",
+    "test_cases": [
+      {
+        "input": [
+          "hello",
+          "ll"
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          "aaaaa",
+          "bba"
+        ],
+        "expected": -1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "字符串",
+      "匹配"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_015",
+    "task_type": "code_generation",
+    "name": "移除元素",
+    "description": "原地移除指定元素",
+    "requirement": "原地移除数组中等于val的元素，返回新长度",
+    "test_cases": [
+      {
+        "input": [
+          [
+            3,
+            2,
+            2,
+            3
+          ],
+          3
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          [
+            0,
+            1,
+            2,
+            2,
+            0,
+            2,
+            2
+          ],
+          2
+        ],
+        "expected": 3
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "数组"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_016",
+    "task_type": "code_generation",
+    "name": "搜索插入位置",
+    "description": "搜索插入位置",
+    "requirement": "在有序数组中查找目标值，返回索引或插入位置",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            3,
+            5,
+            6
+          ],
+          5
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          [
+            1,
+            3,
+            5,
+            6
+          ],
+          2
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "查找",
+      "二分"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_017",
+    "task_type": "code_generation",
+    "name": "求众数",
+    "description": "求数组中出现次数超过n/2的元素",
+    "requirement": "求数组中出现次数超过数组长度一半的元素",
+    "test_cases": [
+      {
+        "input": [
+          3,
+          2,
+          3
+        ],
+        "expected": 3
+      },
+      {
+        "input": [
+          2,
+          2,
+          1,
+          1,
+          1,
+          2,
+          2
+        ],
+        "expected": 2
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "数组"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_018",
+    "task_type": "code_generation",
+    "name": "盛最多水的容器",
+    "description": "双指针求最大容器",
+    "requirement": "给定高度数组，求能容纳最多水的两条柱子",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          8,
+          6,
+          2,
+          5,
+          4,
+          8,
+          3,
+          7
+        ],
+        "expected": 49
+      },
+      {
+        "input": [
+          1,
+          1
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "双指针"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_019",
+    "task_type": "code_generation",
+    "name": "罗马数字转整数",
+    "description": "罗马数字转换为整数",
+    "requirement": "将罗马数字转换为整数（I=1, V=5, X=10等）",
+    "test_cases": [
+      {
+        "input": "III",
+        "expected": 3
+      },
+      {
+        "input": "IV",
+        "expected": 4
+      },
+      {
+        "input": "IX",
+        "expected": 9
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "字符串"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_020",
+    "task_type": "code_generation",
+    "name": "最长公共前缀",
+    "description": "求字符串数组的最长公共前缀",
+    "requirement": "查找字符串数组中的最长公共前缀",
+    "test_cases": [
+      {
+        "input": [
+          "flower",
+          "flow",
+          "flight"
+        ],
+        "expected": "fl"
+      },
+      {
+        "input": [
+          "dog",
+          "racecar",
+          "car"
+        ],
+        "expected": ""
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "字符串"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_021",
+    "task_type": "code_generation",
+    "name": "验证二叉搜索树",
+    "description": "验证是否为合法二叉搜索树",
+    "requirement": "验证给定的二叉树是否为有效的二叉搜索树",
+    "test_cases": [
+      {
+        "input": [
+          2,
+          1,
+          3
+        ],
+        "expected": true
+      },
+      {
+        "input": [
+          5,
+          1,
+          4,
+          null,
+          null,
+          3,
+          6
+        ],
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "树",
+      "递归"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_022",
+    "task_type": "code_generation",
+    "name": "对称二叉树",
+    "description": "判断二叉树是否对称",
+    "requirement": "判断给定的二叉树是否轴对称",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          2,
+          2,
+          3,
+          4,
+          4,
+          3
+        ],
+        "expected": true
+      },
+      {
+        "input": [
+          1,
+          2,
+          2,
+          null,
+          3,
+          null,
+          3
+        ],
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "树"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_023",
+    "task_type": "code_generation",
+    "name": "层序遍历二叉树",
+    "description": "二叉树的层序遍历",
+    "requirement": "实现二叉树的层序遍历，按层返回节点值",
+    "test_cases": [
+      {
+        "input": [
+          3,
+          9,
+          20,
+          null,
+          null,
+          15,
+          7
+        ],
+        "expected": [
+          [
+            3
+          ],
+          [
+            9,
+            20
+          ],
+          [
+            15,
+            7
+          ]
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "树",
+      "BFS"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_024",
+    "task_type": "code_generation",
+    "name": "实现LRU缓存",
+    "description": "实现最近最少使用缓存",
+    "requirement": "设计并实现LRU缓存数据结构",
+    "test_cases": [
+      {
+        "input": [
+          2,
+          [
+            "put",
+            1,
+            1,
+            "put",
+            2,
+            2,
+            "get",
+            1,
+            "get",
+            2
+          ]
+        ],
+        "expected": [
+          null,
+          null,
+          null,
+          1,
+          2
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "设计",
+      "缓存"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_025",
+    "task_type": "code_generation",
+    "name": "堆排序",
+    "description": "实现堆排序算法",
+    "requirement": "实现堆排序算法对数组进行升序排序",
+    "test_cases": [
+      {
+        "input": [
+          5,
+          2,
+          8,
+          1,
+          9,
+          3
+        ],
+        "expected": [
+          1,
+          2,
+          3,
+          5,
+          8,
+          9
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "排序",
+      "堆"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_001",
+    "task_type": "bug_fix",
+    "name": "修复排序函数bug",
+    "description": "修复冒泡排序函数中的边界问题",
+    "requirement": "以下冒泡排序函数在处理空列表时会报错，请修复：\ndef bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr",
+    "test_cases": [
+      {
+        "input": [],
+        "expected": []
+      },
+      {
+        "input": [
+          3,
+          1,
+          2
+        ],
+        "expected": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "排序"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_002",
+    "task_type": "bug_fix",
+    "name": "修复空指针异常",
+    "description": "修复空列表访问导致的IndexError",
+    "requirement": "修复以下函数处理空列表时的IndexError：\ndef get_first_element(lst):\n    return lst[0]",
+    "test_cases": [
+      {
+        "input": [],
+        "expected": null
+      },
+      {
+        "input": [
+          1,
+          2,
+          3
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "异常处理"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_003",
+    "task_type": "bug_fix",
+    "name": "修复除零错误",
+    "description": "修复除法函数中的除零错误",
+    "requirement": "修复以下函数处理除数为0的情况：\ndef divide(a, b):\n    return a / b",
+    "test_cases": [
+      {
+        "input": [
+          10,
+          2
+        ],
+        "expected": 5
+      },
+      {
+        "input": [
+          10,
+          0
+        ],
+        "expected": null
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "异常处理"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_004",
+    "task_type": "bug_fix",
+    "name": "修复字符串拼接错误",
+    "description": "修复字符串拼接时类型错误",
+    "requirement": "修复以下函数在拼接数字时的类型错误：\ndef concat(a, b):\n    return a + b",
+    "test_cases": [
+      {
+        "input": [
+          "hello",
+          "world"
+        ],
+        "expected": "helloworld"
+      },
+      {
+        "input": [
+          1,
+          2
+        ],
+        "expected": "12"
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "类型转换"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_005",
+    "task_type": "bug_fix",
+    "name": "修复循环索引错误",
+    "description": "修复循环中的索引越界问题",
+    "requirement": "修复以下函数遍历列表时的越界问题：\ndef find_max(lst):\n    max_val = lst[0]\n    for i in range(1, len(lst)+1):\n        if lst[i] > max_val:\n            max_val = lst[i]\n    return max_val",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          5,
+          3
+        ],
+        "expected": 5
+      },
+      {
+        "input": [
+          1
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "索引"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_006",
+    "task_type": "bug_fix",
+    "name": "修复字典键不存在错误",
+    "description": "修复访问不存在的字典键",
+    "requirement": "修复以下函数处理不存在的键：\ndef get_value(d, key):\n    return d[key]",
+    "test_cases": [
+      {
+        "input": [
+          {
+            "a": 1
+          },
+          "a"
+        ],
+        "expected": 1
+      },
+      {
+        "input": [
+          {
+            "a": 1
+          },
+          "b"
+        ],
+        "expected": null
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "字典"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_007",
+    "task_type": "bug_fix",
+    "name": "修复递归深度错误",
+    "description": "修复递归函数的最大递归深度问题",
+    "requirement": "修复以下递归函数处理大数时的栈溢出：\ndef fib(n):\n    return fib(n-1) + fib(n-2) if n > 1 else n",
+    "test_cases": [
+      {
+        "input": 10,
+        "expected": 55
+      },
+      {
+        "input": 0,
+        "expected": 0
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "递归",
+      "动态规划"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_008",
+    "task_type": "bug_fix",
+    "name": "修复浮点数精度问题",
+    "description": "修复浮点数比较精度问题",
+    "requirement": "修复以下函数处理浮点数比较：\ndef is_equal(a, b):\n    return a == b",
+    "test_cases": [
+      {
+        "input": [
+          0.30000000000000004,
+          0.3
+        ],
+        "expected": true
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "浮点数"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_009",
+    "task_type": "bug_fix",
+    "name": "修复文件关闭问题",
+    "description": "修复文件未关闭的资源泄漏",
+    "requirement": "修复以下函数确保文件正确关闭：\ndef read_file(filename):\n    f = open(filename, 'r')\n    return f.read()",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "文件IO"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_010",
+    "task_type": "bug_fix",
+    "name": "修复深拷贝问题",
+    "description": "修复浅拷贝导致的引用问题",
+    "requirement": "修复以下函数确保返回独立副本：\ndef duplicate_list(lst):\n    return lst[:]",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "expected": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "拷贝"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_011",
+    "task_type": "bug_fix",
+    "name": "修复默认参数可变对象bug",
+    "description": "修复可变默认参数导致的共享状态问题",
+    "requirement": "修复以下函数的默认参数问题：\ndef append_to(element, to=[]):\n    to.append(element)\n    return to",
+    "test_cases": [
+      {
+        "input": [
+          1
+        ],
+        "expected": [
+          1
+        ]
+      },
+      {
+        "input": [
+          2
+        ],
+        "expected": [
+          2
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "默认参数"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_012",
+    "task_type": "bug_fix",
+    "name": "修复条件判断逻辑错误",
+    "description": "修复条件判断中的逻辑错误",
+    "requirement": "修复以下函数中判断偶数的错误逻辑：\ndef is_even(n):\n    return n % 2 == 1",
+    "test_cases": [
+      {
+        "input": 4,
+        "expected": true
+      },
+      {
+        "input": 3,
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "逻辑"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_013",
+    "task_type": "bug_fix",
+    "name": "修复字符串大小写敏感问题",
+    "description": "修复大小写不敏感比较问题",
+    "requirement": "修复以下函数实现大小写不敏感比较：\ndef is_same_case(a, b):\n    return a == b",
+    "test_cases": [
+      {
+        "input": [
+          "Hello",
+          "hello"
+        ],
+        "expected": true
+      },
+      {
+        "input": [
+          "Hello",
+          "HELLO"
+        ],
+        "expected": true
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "字符串"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_014",
+    "task_type": "bug_fix",
+    "name": "修复列表推导式变量泄漏",
+    "description": "修复列表推导式中的变量作用域问题",
+    "requirement": "修复以下代码确保i在循环后不变：\ni = 0\nresult = [i for i in range(5)]\nreturn i",
+    "test_cases": [
+      {
+        "input": null,
+        "expected": 0
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "作用域"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_015",
+    "task_type": "bug_fix",
+    "name": "修复正则表达式匹配错误",
+    "description": "修复正则表达式匹配模式错误",
+    "requirement": "修复以下函数正确匹配邮箱格式：\ndef validate_email(email):\n    import re\n    return re.match(r'\\w+@\\w+.\\w', email) is not None",
+    "test_cases": [
+      {
+        "input": "test@example.com",
+        "expected": true
+      },
+      {
+        "input": "invalid@",
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "正则"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_016",
+    "task_type": "bug_fix",
+    "name": "修复日期解析错误",
+    "description": "修复日期字符串解析格式错误",
+    "requirement": "修复以下函数正确解析日期：\ndef parse_date(s):\n    from datetime import datetime\n    return datetime.strptime(s, '%Y-%m-%d')",
+    "test_cases": [
+      {
+        "input": "2024-01-01",
+        "expected": "2024-01-01"
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "日期"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_017",
+    "task_type": "bug_fix",
+    "name": "修复JSON解析错误",
+    "description": "修复JSON解析异常处理",
+    "requirement": "修复以下函数处理无效JSON：\ndef parse_json(s):\n    import json\n    return json.loads(s)",
+    "test_cases": [
+      {
+        "input": "{\"a\": 1}",
+        "expected": {
+          "a": 1
+        }
+      },
+      {
+        "input": "invalid",
+        "expected": null
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "JSON"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_018",
+    "task_type": "bug_fix",
+    "name": "修复多线程共享变量问题",
+    "description": "修复多线程中的竞态条件",
+    "requirement": "修复以下函数处理线程安全问题：\ncounter = 0\ndef increment():\n    global counter\n    counter += 1",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "多线程"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_019",
+    "task_type": "bug_fix",
+    "name": "修复生成器迭代错误",
+    "description": "修复生成器重迭代问题",
+    "requirement": "修复以下函数使其可重复迭代：\ndef generate_numbers(n):\n    for i in range(n):\n        yield i",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "生成器"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_020",
+    "task_type": "bug_fix",
+    "name": "修复装饰器顺序问题",
+    "description": "修复装饰器执行顺序",
+    "requirement": "修复以下装饰器确保执行顺序正确：\n@decorator1\n@decorator2\ndef func():\n    pass",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "装饰器"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_021",
+    "task_type": "bug_fix",
+    "name": "修复迭代器耗尽问题",
+    "description": "修复迭代器一次性消耗问题",
+    "requirement": "修复以下函数确保可重复消费：\ndef get_iterator(lst):\n    return iter(lst)",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "迭代器"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_022",
+    "task_type": "bug_fix",
+    "name": "修复HTTP请求超时处理",
+    "description": "修复HTTP请求超时异常",
+    "requirement": "修复以下函数处理请求超时：\nimport requests\ndef fetch(url):\n    return requests.get(url).json()",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "HTTP"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_023",
+    "task_type": "bug_fix",
+    "name": "修复数据库连接泄漏",
+    "description": "修复数据库连接未关闭问题",
+    "requirement": "修复以下函数确保连接正确关闭：\ndef query_db(sql):\n    conn = get_connection()\n    return conn.execute(sql)",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "数据库"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "bf_024",
+    "task_type": "bug_fix",
+    "name": "修复函数参数传递错误",
+    "description": "修复可变对象参数被意外修改",
+    "requirement": "修复以下函数不修改原列表：\ndef sort_list(lst):\n    lst.sort()\n    return lst",
+    "test_cases": [
+      {
+        "input": [
+          3,
+          1,
+          2
+        ],
+        "expected": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "参数"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_001",
+    "task_type": "requirement_decomposition",
+    "name": "待办清单应用分解",
+    "description": "分解待办清单应用的开发需求",
+    "requirement": "开发一个Web版待办清单应用，支持用户注册登录、添加/删除/修改待办、标记完成、分类管理功能，使用Python Flask后端和React前端",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "Web开发"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_002",
+    "task_type": "requirement_decomposition",
+    "name": "在线商城系统分解",
+    "description": "分解在线商城系统开发需求",
+    "requirement": "开发一个在线商城系统，包含用户管理、商品展示、购物车、订单处理、支付集成、库存管理功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "电商"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_003",
+    "task_type": "requirement_decomposition",
+    "name": "社交媒体App分解",
+    "description": "分解社交媒体应用开发需求",
+    "requirement": "开发一个社交媒体App，支持用户资料、发帖、点赞、评论、关注、私信、话题标签、推荐算法功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "社交"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_004",
+    "task_type": "requirement_decomposition",
+    "name": "博客系统分解",
+    "description": "分解博客系统开发需求",
+    "requirement": "开发一个博客平台，支持文章撰写、分类标签、评论系统、搜索功能、用户关注、内容推荐、后台管理",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "内容管理"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_005",
+    "task_type": "requirement_decomposition",
+    "name": "在线教育平台分解",
+    "description": "分解在线教育平台开发需求",
+    "requirement": "开发一个在线教育平台，包含课程管理、视频播放、作业提交、在线考试、学习进度跟踪、证书颁发、讨论区功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "教育"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_006",
+    "task_type": "requirement_decomposition",
+    "name": "企业内部系统分解",
+    "description": "分解企业内部管理系统开发需求",
+    "requirement": "开发一个企业内部管理系统，包含员工管理、考勤打卡、审批流程、公告发布、文件共享、即时通讯功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "企业软件"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_007",
+    "task_type": "requirement_decomposition",
+    "name": "智能家居系统分解",
+    "description": "分解智能家居系统开发需求",
+    "requirement": "开发一个智能家居控制系统，支持设备配网、远程控制、定时任务、场景联动、能耗统计、语音控制功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "物联网"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_008",
+    "task_type": "requirement_decomposition",
+    "name": "外卖配送平台分解",
+    "description": "分解外卖配送平台开发需求",
+    "requirement": "开发一个外卖配送平台，包含商家入驻、菜品管理、订单处理、骑手调度、实时追踪、评价系统、优惠券功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "O2O"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_009",
+    "task_type": "requirement_decomposition",
+    "name": "在线医疗系统分解",
+    "description": "分解在线医疗系统开发需求",
+    "requirement": "开发一个在线医疗平台，包含预约挂号、在线问诊、电子处方、药品配送、健康档案、医疗科普功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "需求分析",
+      "医疗"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_010",
+    "task_type": "requirement_decomposition",
+    "name": "旅游预订平台分解",
+    "description": "分解旅游预订平台开发需求",
+    "requirement": "开发一个旅游预订平台，包含景点介绍、酒店预订、机票购买、行程规划、用户评价、攻略分享功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "旅游"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_011",
+    "task_type": "requirement_decomposition",
+    "name": "金融理财App分解",
+    "description": "分解金融理财应用开发需求",
+    "requirement": "开发一个金融理财App，包含账户管理、投资理财、基金购买、收益分析、风险评估、交易记录功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "需求分析",
+      "金融"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_012",
+    "task_type": "requirement_decomposition",
+    "name": "招聘平台分解",
+    "description": "分解招聘平台开发需求",
+    "requirement": "开发一个招聘平台，包含职位发布、简历投递、智能推荐、在线面试、企业评价、薪资分析功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "人力资源"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_013",
+    "task_type": "requirement_decomposition",
+    "name": "餐饮管理系统分解",
+    "description": "分解餐饮管理系统开发需求",
+    "requirement": "开发一个餐饮管理系统，包含菜品管理、订单处理、桌位管理、会员系统、财务统计、员工管理功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "餐饮"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_014",
+    "task_type": "requirement_decomposition",
+    "name": "智慧校园平台分解",
+    "description": "分解智慧校园平台开发需求",
+    "requirement": "开发一个智慧校园平台，包含教务管理、成绩查询、图书借阅、宿舍管理、校园卡消费、通知公告功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "教育"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_015",
+    "task_type": "requirement_decomposition",
+    "name": "视频流媒体平台分解",
+    "description": "分解视频流媒体平台开发需求",
+    "requirement": "开发一个视频流媒体平台，包含视频上传、转码处理、播放管理、弹幕系统、推荐算法、用户会员功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "需求分析",
+      "流媒体"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_016",
+    "task_type": "requirement_decomposition",
+    "name": "CRM客户管理系统分解",
+    "description": "分解CRM系统开发需求",
+    "requirement": "开发一个CRM系统，包含客户管理、销售跟进、合同管理、数据分析、营销自动化、报表生成功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "企业软件"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_017",
+    "task_type": "requirement_decomposition",
+    "name": "共享单车系统分解",
+    "description": "分解共享单车系统开发需求",
+    "requirement": "开发一个共享单车平台，包含扫码开锁、计费规则、站点管理、车辆调度、故障报修、用户投诉功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "共享经济"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_018",
+    "task_type": "requirement_decomposition",
+    "name": "知识库系统分解",
+    "description": "分解知识库系统开发需求",
+    "requirement": "开发一个企业知识库系统，包含文档管理、版本控制、权限管理、全文搜索、标签分类、评论协作功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "知识管理"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_019",
+    "task_type": "requirement_decomposition",
+    "name": "区块链交易平台分解",
+    "description": "分解区块链交易平台开发需求",
+    "requirement": "开发一个区块链交易平台，包含钱包管理、交易下单、市场行情、风控系统、链上追踪、KYC认证功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "需求分析",
+      "区块链"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_020",
+    "task_type": "requirement_decomposition",
+    "name": "游戏平台分解",
+    "description": "分解游戏平台开发需求",
+    "requirement": "开发一个游戏平台，包含游戏展示、账号管理、支付充值、排行榜、社交分享、客服支持功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "游戏"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_021",
+    "task_type": "requirement_decomposition",
+    "name": "物业管理系统分解",
+    "description": "分解物业管理系统开发需求",
+    "requirement": "开发一个物业管理系统，包含住户管理、费用收缴、维修工单、访客登记、公告通知、设备巡检功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "物业"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_022",
+    "task_type": "requirement_decomposition",
+    "name": "数据分析平台分解",
+    "description": "分解数据分析平台开发需求",
+    "requirement": "开发一个数据分析平台，包含数据接入、可视化报表、自定义查询、仪表盘、告警通知、权限管理功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "需求分析",
+      "数据分析"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_023",
+    "task_type": "requirement_decomposition",
+    "name": "短链接服务分解",
+    "description": "分解短链接服务开发需求",
+    "requirement": "开发一个短链接服务，包含链接生成、访问统计、链接管理、自定义别名、批量创建、API接口功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "需求分析",
+      "工具服务"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "rd_024",
+    "task_type": "requirement_decomposition",
+    "name": "邮件营销平台分解",
+    "description": "分解邮件营销平台开发需求",
+    "requirement": "开发一个邮件营销平台，包含邮件模板、发送计划、联系人管理、发送统计、打开率分析、退订管理功能",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "需求分析",
+      "营销"
+    ],
+    "metadata": {}
+  },
+  {
+    "task_id": "cg_001_g1_001",
+    "task_type": "code_generation",
+    "name": "快速排序实现 (G1-001)",
+    "description": "实现Python快速排序函数 | g1 synthetic variant 001",
+    "requirement": "写一个Python函数实现快速排序，支持整数列表排序，返回升序排列结果\n[Variant 001] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          3,
+          1,
+          4,
+          1,
+          5,
+          9,
+          2,
+          6
+        ],
+        "expected": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          9
+        ]
+      },
+      {
+        "input": [],
+        "expected": []
+      },
+      {
+        "input": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ],
+        "expected": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "排序"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 1,
+      "source_task_id": "cg_001"
+    }
+  },
+  {
+    "task_id": "cg_002_g1_002",
+    "task_type": "code_generation",
+    "name": "斐波那契数列 (G1-002)",
+    "description": "实现斐波那契数列计算函数 | g1 synthetic variant 002",
+    "requirement": "写一个Python函数计算第n个斐波那契数，n从0开始，F(0)=0, F(1)=1\n[Variant 002] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": 0,
+        "expected": 0
+      },
+      {
+        "input": 1,
+        "expected": 1
+      },
+      {
+        "input": 10,
+        "expected": 55
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "算法"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 2,
+      "source_task_id": "cg_002"
+    }
+  },
+  {
+    "task_id": "cg_003_g1_003",
+    "task_type": "code_generation",
+    "name": "二分查找 (G1-003)",
+    "description": "实现二分查找算法 | g1 synthetic variant 003",
+    "requirement": "实现一个二分查找函数，在已排序列表中查找目标元素，返回索引或-1\n[Variant 003] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          3
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          6
+        ],
+        "expected": -1
+      },
+      {
+        "input": [
+          [],
+          1
+        ],
+        "expected": -1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "查找"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 3,
+      "source_task_id": "cg_003"
+    }
+  },
+  {
+    "task_id": "cg_004_g1_004",
+    "task_type": "code_generation",
+    "name": "链表反转 (G1-004)",
+    "description": "实现单链表反转 | g1 synthetic variant 004",
+    "requirement": "实现一个函数反转单链表，返回反转后的头节点\n[Variant 004] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "expected": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      {
+        "input": [
+          1
+        ],
+        "expected": [
+          1
+        ]
+      },
+      {
+        "input": [],
+        "expected": []
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "链表"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 4,
+      "source_task_id": "cg_004"
+    }
+  },
+  {
+    "task_id": "cg_005_g1_005",
+    "task_type": "code_generation",
+    "name": "字符串反转 (G1-005)",
+    "description": "实现字符串反转函数 | g1 synthetic variant 005",
+    "requirement": "实现一个函数反转输入字符串，不使用内置reverse方法\n[Variant 005] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": "hello",
+        "expected": "olleh"
+      },
+      {
+        "input": "a",
+        "expected": "a"
+      },
+      {
+        "input": "",
+        "expected": ""
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "字符串"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 5,
+      "source_task_id": "cg_005"
+    }
+  },
+  {
+    "task_id": "cg_006_g1_006",
+    "task_type": "code_generation",
+    "name": "判断回文数 (G1-006)",
+    "description": "判断一个整数是否为回文数 | g1 synthetic variant 006",
+    "requirement": "实现函数判断整数是否为回文数（正读和倒读相同），负数返回False\n[Variant 006] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": 121,
+        "expected": true
+      },
+      {
+        "input": -121,
+        "expected": false
+      },
+      {
+        "input": 10,
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "数学"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 6,
+      "source_task_id": "cg_006"
+    }
+  },
+  {
+    "task_id": "cg_007_g1_007",
+    "task_type": "code_generation",
+    "name": "两数之和 (G1-007)",
+    "description": "查找数组中两数之和为目标值的索引 | g1 synthetic variant 007",
+    "requirement": "给定整数数组和目标值，返回两个数的索引使得它们的和为目标值\n[Variant 007] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          [
+            2,
+            7,
+            11,
+            15
+          ],
+          9
+        ],
+        "expected": [
+          0,
+          1
+        ]
+      },
+      {
+        "input": [
+          [
+            3,
+            2,
+            4
+          ],
+          6
+        ],
+        "expected": [
+          1,
+          2
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "数组"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 7,
+      "source_task_id": "cg_007"
+    }
+  },
+  {
+    "task_id": "cg_008_g1_008",
+    "task_type": "code_generation",
+    "name": "合并两个有序链表 (G1-008)",
+    "description": "合并两个有序链表 | g1 synthetic variant 008",
+    "requirement": "实现函数合并两个有序链表，返回合并后的有序链表\n[Variant 008] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            1,
+            3,
+            4
+          ]
+        ],
+        "expected": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          4
+        ]
+      },
+      {
+        "input": [
+          [],
+          []
+        ],
+        "expected": []
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "链表"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 8,
+      "source_task_id": "cg_008"
+    }
+  },
+  {
+    "task_id": "cg_009_g1_009",
+    "task_type": "code_generation",
+    "name": "最大子数组和 (G1-009)",
+    "description": "求解最大子数组和 | g1 synthetic variant 009",
+    "requirement": "给定整数数组，找到连续子数组的最大和\n[Variant 009] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          -2,
+          1,
+          -3,
+          4,
+          -1,
+          2,
+          1,
+          -5,
+          4
+        ],
+        "expected": 6
+      },
+      {
+        "input": [
+          1
+        ],
+        "expected": 1
+      },
+      {
+        "input": [
+          5,
+          4,
+          -1,
+          7,
+          8
+        ],
+        "expected": 23
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "算法",
+      "动态规划"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 9,
+      "source_task_id": "cg_009"
+    }
+  },
+  {
+    "task_id": "cg_010_g1_010",
+    "task_type": "code_generation",
+    "name": "有效的括号 (G1-010)",
+    "description": "判断括号字符串是否有效 | g1 synthetic variant 010",
+    "requirement": "判断给定字符串中的括号是否匹配有效：()[]{}\n[Variant 010] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": "()",
+        "expected": true
+      },
+      {
+        "input": "()[]{}",
+        "expected": true
+      },
+      {
+        "input": "(]",
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "栈"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 10,
+      "source_task_id": "cg_010"
+    }
+  },
+  {
+    "task_id": "cg_011_g1_011",
+    "task_type": "code_generation",
+    "name": "删除排序数组中的重复项 (G1-011)",
+    "description": "删除有序数组中的重复项 | g1 synthetic variant 011",
+    "requirement": "原地删除有序数组中的重复项，返回新长度\n[Variant 011] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          1,
+          2
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          0,
+          0,
+          1,
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4
+        ],
+        "expected": 5
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "数组",
+      "双指针"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 11,
+      "source_task_id": "cg_011"
+    }
+  },
+  {
+    "task_id": "cg_012_g1_012",
+    "task_type": "code_generation",
+    "name": "爬楼梯 (G1-012)",
+    "description": "爬楼梯问题 | g1 synthetic variant 012",
+    "requirement": "有n阶楼梯，每次可爬1或2阶，求爬到顶的不同方法数\n[Variant 012] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": 2,
+        "expected": 2
+      },
+      {
+        "input": 3,
+        "expected": 3
+      },
+      {
+        "input": 4,
+        "expected": 5
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "动态规划"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 12,
+      "source_task_id": "cg_012"
+    }
+  },
+  {
+    "task_id": "cg_013_g1_013",
+    "task_type": "code_generation",
+    "name": "反转整数 (G1-013)",
+    "description": "反转整数数字 | g1 synthetic variant 013",
+    "requirement": "反转整数数字，超出32位整数范围返回0\n[Variant 013] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": 123,
+        "expected": 321
+      },
+      {
+        "input": -123,
+        "expected": -321
+      },
+      {
+        "input": 120,
+        "expected": 21
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "Python",
+      "数学"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 13,
+      "source_task_id": "cg_013"
+    }
+  },
+  {
+    "task_id": "cg_014_g1_014",
+    "task_type": "code_generation",
+    "name": "实现strStr (G1-014)",
+    "description": "字符串匹配查找子串 | g1 synthetic variant 014",
+    "requirement": "实现strStr函数，返回子串首次出现位置，不存在返回-1\n[Variant 014] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          "hello",
+          "ll"
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          "aaaaa",
+          "bba"
+        ],
+        "expected": -1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "字符串",
+      "匹配"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 14,
+      "source_task_id": "cg_014"
+    }
+  },
+  {
+    "task_id": "cg_015_g1_015",
+    "task_type": "code_generation",
+    "name": "移除元素 (G1-015)",
+    "description": "原地移除指定元素 | g1 synthetic variant 015",
+    "requirement": "原地移除数组中等于val的元素，返回新长度\n[Variant 015] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          [
+            3,
+            2,
+            2,
+            3
+          ],
+          3
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          [
+            0,
+            1,
+            2,
+            2,
+            0,
+            2,
+            2
+          ],
+          2
+        ],
+        "expected": 3
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "数组"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 15,
+      "source_task_id": "cg_015"
+    }
+  },
+  {
+    "task_id": "cg_016_g1_016",
+    "task_type": "code_generation",
+    "name": "搜索插入位置 (G1-016)",
+    "description": "搜索插入位置 | g1 synthetic variant 016",
+    "requirement": "在有序数组中查找目标值，返回索引或插入位置\n[Variant 016] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            3,
+            5,
+            6
+          ],
+          5
+        ],
+        "expected": 2
+      },
+      {
+        "input": [
+          [
+            1,
+            3,
+            5,
+            6
+          ],
+          2
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "查找",
+      "二分"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 16,
+      "source_task_id": "cg_016"
+    }
+  },
+  {
+    "task_id": "cg_017_g1_017",
+    "task_type": "code_generation",
+    "name": "求众数 (G1-017)",
+    "description": "求数组中出现次数超过n/2的元素 | g1 synthetic variant 017",
+    "requirement": "求数组中出现次数超过数组长度一半的元素\n[Variant 017] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          3,
+          2,
+          3
+        ],
+        "expected": 3
+      },
+      {
+        "input": [
+          2,
+          2,
+          1,
+          1,
+          1,
+          2,
+          2
+        ],
+        "expected": 2
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "数组"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 17,
+      "source_task_id": "cg_017"
+    }
+  },
+  {
+    "task_id": "cg_018_g1_018",
+    "task_type": "code_generation",
+    "name": "盛最多水的容器 (G1-018)",
+    "description": "双指针求最大容器 | g1 synthetic variant 018",
+    "requirement": "给定高度数组，求能容纳最多水的两条柱子\n[Variant 018] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          8,
+          6,
+          2,
+          5,
+          4,
+          8,
+          3,
+          7
+        ],
+        "expected": 49
+      },
+      {
+        "input": [
+          1,
+          1
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "双指针"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 18,
+      "source_task_id": "cg_018"
+    }
+  },
+  {
+    "task_id": "cg_019_g1_019",
+    "task_type": "code_generation",
+    "name": "罗马数字转整数 (G1-019)",
+    "description": "罗马数字转换为整数 | g1 synthetic variant 019",
+    "requirement": "将罗马数字转换为整数（I=1, V=5, X=10等）\n[Variant 019] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": "III",
+        "expected": 3
+      },
+      {
+        "input": "IV",
+        "expected": 4
+      },
+      {
+        "input": "IX",
+        "expected": 9
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "字符串"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 19,
+      "source_task_id": "cg_019"
+    }
+  },
+  {
+    "task_id": "cg_020_g1_020",
+    "task_type": "code_generation",
+    "name": "最长公共前缀 (G1-020)",
+    "description": "求字符串数组的最长公共前缀 | g1 synthetic variant 020",
+    "requirement": "查找字符串数组中的最长公共前缀\n[Variant 020] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          "flower",
+          "flow",
+          "flight"
+        ],
+        "expected": "fl"
+      },
+      {
+        "input": [
+          "dog",
+          "racecar",
+          "car"
+        ],
+        "expected": ""
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "字符串"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 20,
+      "source_task_id": "cg_020"
+    }
+  },
+  {
+    "task_id": "cg_021_g1_021",
+    "task_type": "code_generation",
+    "name": "验证二叉搜索树 (G1-021)",
+    "description": "验证是否为合法二叉搜索树 | g1 synthetic variant 021",
+    "requirement": "验证给定的二叉树是否为有效的二叉搜索树\n[Variant 021] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          2,
+          1,
+          3
+        ],
+        "expected": true
+      },
+      {
+        "input": [
+          5,
+          1,
+          4,
+          null,
+          null,
+          3,
+          6
+        ],
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "树",
+      "递归"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 21,
+      "source_task_id": "cg_021"
+    }
+  },
+  {
+    "task_id": "cg_022_g1_022",
+    "task_type": "code_generation",
+    "name": "对称二叉树 (G1-022)",
+    "description": "判断二叉树是否对称 | g1 synthetic variant 022",
+    "requirement": "判断给定的二叉树是否轴对称\n[Variant 022] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          2,
+          2,
+          3,
+          4,
+          4,
+          3
+        ],
+        "expected": true
+      },
+      {
+        "input": [
+          1,
+          2,
+          2,
+          null,
+          3,
+          null,
+          3
+        ],
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "树"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 22,
+      "source_task_id": "cg_022"
+    }
+  },
+  {
+    "task_id": "cg_023_g1_023",
+    "task_type": "code_generation",
+    "name": "层序遍历二叉树 (G1-023)",
+    "description": "二叉树的层序遍历 | g1 synthetic variant 023",
+    "requirement": "实现二叉树的层序遍历，按层返回节点值\n[Variant 023] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          3,
+          9,
+          20,
+          null,
+          null,
+          15,
+          7
+        ],
+        "expected": [
+          [
+            3
+          ],
+          [
+            9,
+            20
+          ],
+          [
+            15,
+            7
+          ]
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "Python",
+      "树",
+      "BFS"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 23,
+      "source_task_id": "cg_023"
+    }
+  },
+  {
+    "task_id": "cg_024_g1_024",
+    "task_type": "code_generation",
+    "name": "实现LRU缓存 (G1-024)",
+    "description": "实现最近最少使用缓存 | g1 synthetic variant 024",
+    "requirement": "设计并实现LRU缓存数据结构\n[Variant 024] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          2,
+          [
+            "put",
+            1,
+            1,
+            "put",
+            2,
+            2,
+            "get",
+            1,
+            "get",
+            2
+          ]
+        ],
+        "expected": [
+          null,
+          null,
+          null,
+          1,
+          2
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "设计",
+      "缓存"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 24,
+      "source_task_id": "cg_024"
+    }
+  },
+  {
+    "task_id": "cg_025_g1_025",
+    "task_type": "code_generation",
+    "name": "堆排序 (G1-025)",
+    "description": "实现堆排序算法 | g1 synthetic variant 025",
+    "requirement": "实现堆排序算法对数组进行升序排序\n[Variant 025] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          5,
+          2,
+          8,
+          1,
+          9,
+          3
+        ],
+        "expected": [
+          1,
+          2,
+          3,
+          5,
+          8,
+          9
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "排序",
+      "堆"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 25,
+      "source_task_id": "cg_025"
+    }
+  },
+  {
+    "task_id": "bf_001_g1_026",
+    "task_type": "bug_fix",
+    "name": "修复排序函数bug (G1-026)",
+    "description": "修复冒泡排序函数中的边界问题 | g1 synthetic variant 026",
+    "requirement": "以下冒泡排序函数在处理空列表时会报错，请修复：\ndef bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr\n[Variant 026] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [],
+        "expected": []
+      },
+      {
+        "input": [
+          3,
+          1,
+          2
+        ],
+        "expected": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "排序"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 26,
+      "source_task_id": "bf_001"
+    }
+  },
+  {
+    "task_id": "bf_002_g1_027",
+    "task_type": "bug_fix",
+    "name": "修复空指针异常 (G1-027)",
+    "description": "修复空列表访问导致的IndexError | g1 synthetic variant 027",
+    "requirement": "修复以下函数处理空列表时的IndexError：\ndef get_first_element(lst):\n    return lst[0]\n[Variant 027] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [],
+        "expected": null
+      },
+      {
+        "input": [
+          1,
+          2,
+          3
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "异常处理"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 27,
+      "source_task_id": "bf_002"
+    }
+  },
+  {
+    "task_id": "bf_003_g1_028",
+    "task_type": "bug_fix",
+    "name": "修复除零错误 (G1-028)",
+    "description": "修复除法函数中的除零错误 | g1 synthetic variant 028",
+    "requirement": "修复以下函数处理除数为0的情况：\ndef divide(a, b):\n    return a / b\n[Variant 028] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          10,
+          2
+        ],
+        "expected": 5
+      },
+      {
+        "input": [
+          10,
+          0
+        ],
+        "expected": null
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "异常处理"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 28,
+      "source_task_id": "bf_003"
+    }
+  },
+  {
+    "task_id": "bf_004_g1_029",
+    "task_type": "bug_fix",
+    "name": "修复字符串拼接错误 (G1-029)",
+    "description": "修复字符串拼接时类型错误 | g1 synthetic variant 029",
+    "requirement": "修复以下函数在拼接数字时的类型错误：\ndef concat(a, b):\n    return a + b\n[Variant 029] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          "hello",
+          "world"
+        ],
+        "expected": "helloworld"
+      },
+      {
+        "input": [
+          1,
+          2
+        ],
+        "expected": "12"
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "类型转换"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 29,
+      "source_task_id": "bf_004"
+    }
+  },
+  {
+    "task_id": "bf_005_g1_030",
+    "task_type": "bug_fix",
+    "name": "修复循环索引错误 (G1-030)",
+    "description": "修复循环中的索引越界问题 | g1 synthetic variant 030",
+    "requirement": "修复以下函数遍历列表时的越界问题：\ndef find_max(lst):\n    max_val = lst[0]\n    for i in range(1, len(lst)+1):\n        if lst[i] > max_val:\n            max_val = lst[i]\n    return max_val\n[Variant 030] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          1,
+          5,
+          3
+        ],
+        "expected": 5
+      },
+      {
+        "input": [
+          1
+        ],
+        "expected": 1
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "索引"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 30,
+      "source_task_id": "bf_005"
+    }
+  },
+  {
+    "task_id": "bf_006_g1_031",
+    "task_type": "bug_fix",
+    "name": "修复字典键不存在错误 (G1-031)",
+    "description": "修复访问不存在的字典键 | g1 synthetic variant 031",
+    "requirement": "修复以下函数处理不存在的键：\ndef get_value(d, key):\n    return d[key]\n[Variant 031] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          {
+            "a": 1
+          },
+          "a"
+        ],
+        "expected": 1
+      },
+      {
+        "input": [
+          {
+            "a": 1
+          },
+          "b"
+        ],
+        "expected": null
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "字典"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 31,
+      "source_task_id": "bf_006"
+    }
+  },
+  {
+    "task_id": "bf_007_g1_032",
+    "task_type": "bug_fix",
+    "name": "修复递归深度错误 (G1-032)",
+    "description": "修复递归函数的最大递归深度问题 | g1 synthetic variant 032",
+    "requirement": "修复以下递归函数处理大数时的栈溢出：\ndef fib(n):\n    return fib(n-1) + fib(n-2) if n > 1 else n\n[Variant 032] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": 10,
+        "expected": 55
+      },
+      {
+        "input": 0,
+        "expected": 0
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "递归",
+      "动态规划"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 32,
+      "source_task_id": "bf_007"
+    }
+  },
+  {
+    "task_id": "bf_008_g1_033",
+    "task_type": "bug_fix",
+    "name": "修复浮点数精度问题 (G1-033)",
+    "description": "修复浮点数比较精度问题 | g1 synthetic variant 033",
+    "requirement": "修复以下函数处理浮点数比较：\ndef is_equal(a, b):\n    return a == b\n[Variant 033] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          0.30000000000000004,
+          0.3
+        ],
+        "expected": true
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 5,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "浮点数"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 33,
+      "source_task_id": "bf_008"
+    }
+  },
+  {
+    "task_id": "bf_009_g1_034",
+    "task_type": "bug_fix",
+    "name": "修复文件关闭问题 (G1-034)",
+    "description": "修复文件未关闭的资源泄漏 | g1 synthetic variant 034",
+    "requirement": "修复以下函数确保文件正确关闭：\ndef read_file(filename):\n    f = open(filename, 'r')\n    return f.read()\n[Variant 034] Keep semantic intent while changing details for robustness.",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "文件IO"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 34,
+      "source_task_id": "bf_009"
+    }
+  },
+  {
+    "task_id": "bf_010_g1_035",
+    "task_type": "bug_fix",
+    "name": "修复深拷贝问题 (G1-035)",
+    "description": "修复浅拷贝导致的引用问题 | g1 synthetic variant 035",
+    "requirement": "修复以下函数确保返回独立副本：\ndef duplicate_list(lst):\n    return lst[:]\n[Variant 035] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "expected": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "拷贝"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 35,
+      "source_task_id": "bf_010"
+    }
+  },
+  {
+    "task_id": "bf_011_g1_036",
+    "task_type": "bug_fix",
+    "name": "修复默认参数可变对象bug (G1-036)",
+    "description": "修复可变默认参数导致的共享状态问题 | g1 synthetic variant 036",
+    "requirement": "修复以下函数的默认参数问题：\ndef append_to(element, to=[]):\n    to.append(element)\n    return to\n[Variant 036] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          1
+        ],
+        "expected": [
+          1
+        ]
+      },
+      {
+        "input": [
+          2
+        ],
+        "expected": [
+          2
+        ]
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "默认参数"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 36,
+      "source_task_id": "bf_011"
+    }
+  },
+  {
+    "task_id": "bf_012_g1_037",
+    "task_type": "bug_fix",
+    "name": "修复条件判断逻辑错误 (G1-037)",
+    "description": "修复条件判断中的逻辑错误 | g1 synthetic variant 037",
+    "requirement": "修复以下函数中判断偶数的错误逻辑：\ndef is_even(n):\n    return n % 2 == 1\n[Variant 037] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": 4,
+        "expected": true
+      },
+      {
+        "input": 3,
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "逻辑"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 37,
+      "source_task_id": "bf_012"
+    }
+  },
+  {
+    "task_id": "bf_013_g1_038",
+    "task_type": "bug_fix",
+    "name": "修复字符串大小写敏感问题 (G1-038)",
+    "description": "修复大小写不敏感比较问题 | g1 synthetic variant 038",
+    "requirement": "修复以下函数实现大小写不敏感比较：\ndef is_same_case(a, b):\n    return a == b\n[Variant 038] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": [
+          "Hello",
+          "hello"
+        ],
+        "expected": true
+      },
+      {
+        "input": [
+          "Hello",
+          "HELLO"
+        ],
+        "expected": true
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "字符串"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 38,
+      "source_task_id": "bf_013"
+    }
+  },
+  {
+    "task_id": "bf_014_g1_039",
+    "task_type": "bug_fix",
+    "name": "修复列表推导式变量泄漏 (G1-039)",
+    "description": "修复列表推导式中的变量作用域问题 | g1 synthetic variant 039",
+    "requirement": "修复以下代码确保i在循环后不变：\ni = 0\nresult = [i for i in range(5)]\nreturn i\n[Variant 039] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": null,
+        "expected": 0
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "作用域"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 39,
+      "source_task_id": "bf_014"
+    }
+  },
+  {
+    "task_id": "bf_015_g1_040",
+    "task_type": "bug_fix",
+    "name": "修复正则表达式匹配错误 (G1-040)",
+    "description": "修复正则表达式匹配模式错误 | g1 synthetic variant 040",
+    "requirement": "修复以下函数正确匹配邮箱格式：\ndef validate_email(email):\n    import re\n    return re.match(r'\\w+@\\w+.\\w', email) is not None\n[Variant 040] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": "test@example.com",
+        "expected": true
+      },
+      {
+        "input": "invalid@",
+        "expected": false
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 2,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "正则"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 40,
+      "source_task_id": "bf_015"
+    }
+  },
+  {
+    "task_id": "bf_016_g1_041",
+    "task_type": "bug_fix",
+    "name": "修复日期解析错误 (G1-041)",
+    "description": "修复日期字符串解析格式错误 | g1 synthetic variant 041",
+    "requirement": "修复以下函数正确解析日期：\ndef parse_date(s):\n    from datetime import datetime\n    return datetime.strptime(s, '%Y-%m-%d')\n[Variant 041] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": "2024-01-01",
+        "expected": "2024-01-01"
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "日期"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 41,
+      "source_task_id": "bf_016"
+    }
+  },
+  {
+    "task_id": "bf_017_g1_042",
+    "task_type": "bug_fix",
+    "name": "修复JSON解析错误 (G1-042)",
+    "description": "修复JSON解析异常处理 | g1 synthetic variant 042",
+    "requirement": "修复以下函数处理无效JSON：\ndef parse_json(s):\n    import json\n    return json.loads(s)\n[Variant 042] Keep semantic intent while changing details for robustness.",
+    "test_cases": [
+      {
+        "input": "{\"a\": 1}",
+        "expected": {
+          "a": 1
+        }
+      },
+      {
+        "input": "invalid",
+        "expected": null
+      }
+    ],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "JSON"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 42,
+      "source_task_id": "bf_017"
+    }
+  },
+  {
+    "task_id": "bf_018_g1_043",
+    "task_type": "bug_fix",
+    "name": "修复多线程共享变量问题 (G1-043)",
+    "description": "修复多线程中的竞态条件 | g1 synthetic variant 043",
+    "requirement": "修复以下函数处理线程安全问题：\ncounter = 0\ndef increment():\n    global counter\n    counter += 1\n[Variant 043] Keep semantic intent while changing details for robustness.",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "多线程"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 43,
+      "source_task_id": "bf_018"
+    }
+  },
+  {
+    "task_id": "bf_019_g1_044",
+    "task_type": "bug_fix",
+    "name": "修复生成器迭代错误 (G1-044)",
+    "description": "修复生成器重迭代问题 | g1 synthetic variant 044",
+    "requirement": "修复以下函数使其可重复迭代：\ndef generate_numbers(n):\n    for i in range(n):\n        yield i\n[Variant 044] Keep semantic intent while changing details for robustness.",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 1,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "生成器"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 44,
+      "source_task_id": "bf_019"
+    }
+  },
+  {
+    "task_id": "bf_020_g1_045",
+    "task_type": "bug_fix",
+    "name": "修复装饰器顺序问题 (G1-045)",
+    "description": "修复装饰器执行顺序 | g1 synthetic variant 045",
+    "requirement": "修复以下装饰器确保执行顺序正确：\n@decorator1\n@decorator2\ndef func():\n    pass\n[Variant 045] Keep semantic intent while changing details for robustness.",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "装饰器"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 45,
+      "source_task_id": "bf_020"
+    }
+  },
+  {
+    "task_id": "bf_021_g1_046",
+    "task_type": "bug_fix",
+    "name": "修复迭代器耗尽问题 (G1-046)",
+    "description": "修复迭代器一次性消耗问题 | g1 synthetic variant 046",
+    "requirement": "修复以下函数确保可重复消费：\ndef get_iterator(lst):\n    return iter(lst)\n[Variant 046] Keep semantic intent while changing details for robustness.",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 3,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "迭代器"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 46,
+      "source_task_id": "bf_021"
+    }
+  },
+  {
+    "task_id": "bf_022_g1_047",
+    "task_type": "bug_fix",
+    "name": "修复HTTP请求超时处理 (G1-047)",
+    "description": "修复HTTP请求超时异常 | g1 synthetic variant 047",
+    "requirement": "修复以下函数处理请求超时：\nimport requests\ndef fetch(url):\n    return requests.get(url).json()\n[Variant 047] Keep semantic intent while changing details for robustness.",
+    "test_cases": [],
+    "expected_output": null,
+    "difficulty": 4,
+    "domain_tags": [
+      "Python",
+      "bug修复",
+      "HTTP"
+    ],
+    "metadata": {
+      "synthetic": true,
+      "variant_serial": 47,
+      "source_task_id": "bf_022"
+    }
+  }
+]

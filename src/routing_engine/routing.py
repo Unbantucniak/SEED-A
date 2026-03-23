@@ -48,8 +48,17 @@ class RoutingEngine:
                 "min_success_rate": 0.85
             }
         }
+        disabled = merged_cfg.get("disabled_strategies", [])
+        if isinstance(disabled, str):
+            disabled = [item.strip() for item in disabled.split(",") if item.strip()]
+        self.disabled_strategies = {str(item).strip().lower() for item in disabled if str(item).strip()}
         # 路由历史记录，用于强化学习训练
         self.routing_history = []
+
+    def _is_strategy_disabled(self, strategy: StrategyType) -> bool:
+        strategy_key = strategy.value.lower()
+        strategy_name = strategy.name.lower()
+        return strategy_key in self.disabled_strategies or strategy_name in self.disabled_strategies
     
     def extract_task_features(self, task_info: Dict[str, Any]) -> Dict[str, Any]:
         """提取任务特征"""
@@ -73,6 +82,9 @@ class RoutingEngine:
                                matched_experiences: List[Dict],
                                system_status: Optional[Dict[str, Any]] = None) -> float:
         """计算单个策略的综合得分"""
+        if self._is_strategy_disabled(strategy):
+            return -1.0
+
         config = self.strategy_config[strategy]
         system_status = system_status or {"load": 0.5, "available_compute": 1.0}
         
@@ -131,16 +143,25 @@ class RoutingEngine:
         matched_experiences = self.get_matched_experiences(task_info, top_k=10)
         # 计算所有策略的得分
         strategy_scores = {}
+        enabled_scores = {}
         for strategy in StrategyType:
             score = self.calculate_strategy_score(strategy, task_features, matched_experiences, system_status)
             strategy_scores[strategy] = score
+            if score >= 0:
+                enabled_scores[strategy] = score
+
+        if not enabled_scores:
+            # 极端情况下全部被禁用，回退到RAG，保证系统可用。
+            enabled_scores[StrategyType.RAG_RETRIEVAL] = 0.0
+            strategy_scores[StrategyType.RAG_RETRIEVAL] = 0.0
         
         # 选择得分最高的策略
-        best_strategy = max(strategy_scores.items(), key=lambda x: x[1])[0]
+        best_strategy = max(enabled_scores.items(), key=lambda x: x[1])[0]
         
         # 准备返回结果
         result = {
             "selected_strategy": best_strategy.value,
+            "selected_score": round(enabled_scores[best_strategy], 3),
             "strategy_scores": {s.value: round(sc, 3) for s, sc in strategy_scores.items()},
             "matched_experiences": [
                 {
@@ -189,3 +210,24 @@ class RoutingEngine:
         # 实际场景可替换为强化学习训练逻辑
         # 这里返回当前权重作为示例
         return self.strategy_weights
+
+    def get_strategy_usage_stats(self) -> Dict[str, Any]:
+        """统计各策略路由使用分布，供监控模块直接消费。"""
+        usage = {strategy.value: 0 for strategy in StrategyType}
+        total = len(self.routing_history)
+
+        for record in self.routing_history:
+            selected = record.get("result", {}).get("selected_strategy")
+            if selected in usage:
+                usage[selected] += 1
+
+        distribution = {
+            key: (count / total if total else 0.0)
+            for key, count in usage.items()
+        }
+
+        return {
+            "total": total,
+            "counts": usage,
+            "distribution": distribution,
+        }

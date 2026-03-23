@@ -16,6 +16,8 @@ project_root = "./"
 max_experience_count = 100000
 # 相似度阈值（超过此值自动建立相似边）
 similarity_threshold = 0.7
+# 入库时是否自动建立相似边（大规模批处理可关闭）
+auto_add_similarity_edges = true
 # 向量嵌入模型
 embedding_model = "BAAI/bge-base-zh-v1.5"
 # 是否使用混合向量检索

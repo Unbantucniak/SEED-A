@@ -3,6 +3,7 @@ import axios from 'axios';
 
 let apiEndpoint = vscode.workspace.getConfiguration('self-evolution-agent').get<string>('apiEndpoint', 'http://localhost:8000');
 let autoSave = vscode.workspace.getConfiguration('self-evolution-agent').get<boolean>('autoSaveExperience', true);
+let suggestionCount = vscode.workspace.getConfiguration('self-evolution-agent').get<number>('suggestionCount', 5);
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('自学习自演化智能助手插件已激活');
@@ -14,6 +15,9 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		if (e.affectsConfiguration('self-evolution-agent.autoSaveExperience')) {
 			autoSave = vscode.workspace.getConfiguration('self-evolution-agent').get<boolean>('autoSaveExperience', true);
+		}
+		if (e.affectsConfiguration('self-evolution-agent.suggestionCount')) {
+			suggestionCount = vscode.workspace.getConfiguration('self-evolution-agent').get<number>('suggestionCount', 5);
 		}
 	});
 
@@ -106,12 +110,72 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	// 注册命令：基于当前编辑上下文实时推荐经验
+	let recommendCommand = vscode.commands.registerCommand('self-evolution-agent.recommendExperience', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			vscode.window.showErrorMessage('没有打开的文本编辑器');
+			return;
+		}
+
+		const selectedText = editor.document.getText(editor.selection).trim();
+		const currentLine = editor.document.lineAt(editor.selection.active.line).text.trim();
+		const currentCode = selectedText || currentLine;
+
+		if (!currentCode) {
+			vscode.window.showWarningMessage('当前上下文为空，请先选中代码或将光标移动到目标语句行');
+			return;
+		}
+
+		try {
+			const response = await axios.post(`${apiEndpoint}/api/experience/recommend`, {
+				current_code: currentCode,
+				language: editor.document.languageId,
+				top_k: suggestionCount
+			});
+			const recommendations = response.data;
+
+			if (!recommendations || recommendations.length === 0) {
+				vscode.window.showInformationMessage('未命中可推荐经验');
+				return;
+			}
+
+			const items = recommendations.map((item: any) => ({
+				label: `${item.task_type}: ${String(item.requirement || '').substring(0, 50)}`,
+				description: `匹配度: ${(item.similarity * 100).toFixed(1)}% | 综合分: ${(item.composite_score * 100).toFixed(1)}%`,
+				detail: String(item.suggestion || '').substring(0, 200),
+				recommendation: item
+			}));
+
+			const selected = await vscode.window.showQuickPick(items, {
+				placeHolder: '选择要查看或复用的经验建议',
+				matchOnDescription: true,
+				matchOnDetail: true
+			});
+
+			if (selected) {
+				const doc = await vscode.workspace.openTextDocument({
+					content: `# 实时经验推荐\n\n` +
+						`- 任务类型: ${selected.recommendation.task_type}\n` +
+						`- 需求: ${selected.recommendation.requirement}\n` +
+						`- 匹配度: ${(selected.recommendation.similarity * 100).toFixed(1)}%\n` +
+						`- 综合分: ${(selected.recommendation.composite_score * 100).toFixed(1)}%\n\n` +
+						`## 推荐内容\n\n\`\`\`\n${selected.recommendation.suggestion}\n\`\`\`\n`,
+					language: 'markdown'
+				});
+				await vscode.window.showTextDocument(doc);
+			}
+		} catch (error) {
+			vscode.window.showErrorMessage(`获取推荐失败: ${(error as Error).message}`);
+		}
+	});
+
 	// 注册命令：打开经验库面板
 	let showLibraryCommand = vscode.commands.registerCommand('self-evolution-agent.showExperienceLibrary', () => {
 		vscode.commands.executeCommand('workbench.view.extension.self-evolution-agent');
 	});
 
-	context.subscriptions.push(searchCommand, saveCommand, showLibraryCommand);
+	context.subscriptions.push(searchCommand, saveCommand, recommendCommand, showLibraryCommand);
 }
 
 export function deactivate() {

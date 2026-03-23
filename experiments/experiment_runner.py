@@ -6,13 +6,16 @@ from typing import List, Dict, Any
 import json
 import time
 import math
+import logging
 from datetime import datetime
 from tqdm import tqdm
-import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 from benchmarks.task_dataset import TaskDataset, EvaluationTask
 from baselines.base_baseline import BaseBaseline
+
+
+logger = logging.getLogger(__name__)
 
 class ExperimentRunner:
     """实验运行器类"""
@@ -60,7 +63,7 @@ class ExperimentRunner:
         task_results = []
         
         for round_num in range(rounds):
-            print(f"\n=== 第{round_num+1}轮实验，基线: {baseline.name} ===")
+            logger.info("=== 第%s轮实验，基线: %s ===", round_num + 1, baseline.name)
             for task in tqdm(tasks, desc=f"{desc} 第{round_num+1}轮"):
                 task_dict = {
                     "task_id": task.task_id,
@@ -108,13 +111,13 @@ class ExperimentRunner:
         else:
             tasks = self.dataset.get_all_tasks()
         
-        print(f"开始实验，共{len(tasks)}个任务，{rounds}轮，{len(self.baselines)}个基线方案")
+        logger.info("开始实验，共%s个任务，%s轮，%s个基线方案", len(tasks), rounds, len(self.baselines))
         
         all_results = {}
         for baseline in self.baselines:
-            print(f"\n\n==================================")
-            print(f"运行基线: {baseline.name}")
-            print("==================================")
+            logger.info("==================================")
+            logger.info("运行基线: %s", baseline.name)
+            logger.info("==================================")
             result = self.run_single_experiment(baseline, tasks, rounds, desc=baseline.name)
             all_results[baseline.name] = result
             self.results = all_results
@@ -139,9 +142,9 @@ class ExperimentRunner:
         # 生成对比图表
         self.generate_charts(output_dir)
         
-        print(f"实验结果已导出到: {output_dir}")
-        print(f"结果文件: {result_file}")
-        print(f"报告文件: {report_file}")
+        logger.info("实验结果已导出到: %s", output_dir)
+        logger.info("结果文件: %s", result_file)
+        logger.info("报告文件: %s", report_file)
         return result_file
     
     def generate_report(self) -> str:
@@ -282,7 +285,6 @@ class ExperimentRunner:
         baseline_names = list(self.results.keys())
         success_rates = [self.results[name]["metrics"]["success_rate"] for name in baseline_names]
         avg_times = [self.results[name]["metrics"]["avg_time_cost"] for name in baseline_names]
-        avg_rounds = [self.results[name]["metrics"]["avg_interaction_rounds"] for name in baseline_names]
         
         # 成功率对比图
         plt.figure(figsize=(10, 6))

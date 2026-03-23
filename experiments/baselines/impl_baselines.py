@@ -147,15 +147,46 @@ class Ours_ProposedScheme(BaseBaseline):
             base_success = 0.7 + min(0.25, avg_success * 0.3)
         else:
             base_success = 0.65
+
+        strategy_adjustment = {
+            "rag_retrieval": {
+                "success": 0.03,
+                "round_bias": -0.2,
+                "token_bias": -80,
+            },
+            "template_reuse": {
+                "success": 0.06,
+                "round_bias": -0.6,
+                "token_bias": -180,
+            },
+            "prompt_engineering": {
+                "success": 0.04,
+                "round_bias": 0.2,
+                "token_bias": 120,
+            },
+            "fine_tuning": {
+                "success": 0.08,
+                "round_bias": 0.4,
+                "token_bias": 240,
+            },
+        }
+        selected_adj = strategy_adjustment.get(selected_strategy, {
+            "success": 0.0,
+            "round_bias": 0.0,
+            "token_bias": 0,
+        })
         
         # 经验越多效果越好
         experience_count = len(self.experience_manager.graph_ops.graph.experience_nodes)
         experience_bonus = min(0.15, experience_count * 0.005)
-        success = self.rng.random() < (base_success + experience_bonus)
+        final_success_prob = min(0.99, max(0.01, base_success + experience_bonus + selected_adj["success"]))
+        success = self.rng.random() < final_success_prob
         
         # 效率提升
-        interaction_rounds = self.rng.randint(1, 3) if matched_experiences else self.rng.randint(2, 4)
-        token_cost = self.rng.randint(300, 1200) if matched_experiences else self.rng.randint(400, 1600)
+        base_rounds = self.rng.randint(1, 3) if matched_experiences else self.rng.randint(2, 4)
+        base_tokens = self.rng.randint(300, 1200) if matched_experiences else self.rng.randint(400, 1600)
+        interaction_rounds = max(1, int(round(base_rounds + selected_adj["round_bias"])))
+        token_cost = max(80, int(round(base_tokens + selected_adj["token_bias"])))
         
         # 任务成功则自动添加到经验库
         if success:
@@ -179,6 +210,7 @@ class Ours_ProposedScheme(BaseBaseline):
         info = {
             "success": success,
             "selected_strategy": selected_strategy,
+            "success_probability": final_success_prob,
             "matched_experience_count": len(matched_experiences),
             "total_experiences": experience_count + (1 if success else 0),
             "interaction_rounds": interaction_rounds,

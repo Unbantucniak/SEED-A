@@ -22,6 +22,10 @@ logs/
 Thumbs.db
 .vscode/
 
+# Prototype transient dependencies
+src/prototype/node_modules/
+src/prototype/package-lock.json
+
 # Local experiment artifacts
 results/
 experiments/results/

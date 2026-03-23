@@ -1,6 +1,7 @@
 from typing import List, Dict, Optional, Any
 from datetime import datetime, timedelta
 import json
+import logging
 from src.experience_graph.model import (
     ExperienceUnit,
     TaskIntent,
@@ -11,6 +12,9 @@ from src.experience_graph.model import (
 )
 from src.experience_graph.operations import GraphOperations
 from src.common.config import get_config_section
+
+
+logger = logging.getLogger(__name__)
 
 class ExperienceManager:
     """经验全生命周期管理类"""
@@ -78,7 +82,7 @@ class ExperienceManager:
             
             return experience
         except Exception as e:
-            print(f"经验抽取失败: {str(e)}")
+            logger.error("经验抽取失败: %s", str(e))
             return None
     
     def calculate_quality_score(self, experience: ExperienceUnit) -> float:
@@ -107,7 +111,7 @@ class ExperienceManager:
         
         quality_score = self.calculate_quality_score(experience)
         if quality_score < self.config["min_quality_score"]:
-            print(f"经验质量分{quality_score:.2f}低于阈值{self.config['min_quality_score']}，不予入库")
+            logger.info("经验质量分%.2f低于阈值%.2f，不予入库", quality_score, self.config["min_quality_score"])
             return None
         
         if auto_verify:
@@ -116,16 +120,32 @@ class ExperienceManager:
         
         # 正式入库
         exp_id = self.graph_ops.add_experience(experience)
-        print(f"经验{exp_id}入库成功，质量分: {quality_score:.2f}")
+        logger.info("经验%s入库成功，质量分: %.2f", exp_id, quality_score)
         return exp_id
     
     def batch_process_raw_data(self, raw_data_list: List[Dict[str, Any]]) -> List[str]:
         """批量处理原始交互数据，抽取经验入库"""
-        success_ids = []
+        accepted_experiences: List[ExperienceUnit] = []
+        accepted_scores: List[float] = []
+
         for raw_data in raw_data_list:
-            exp_id = self.add_candidate_experience(raw_data)
-            if exp_id:
-                success_ids.append(exp_id)
+            experience = self.extract_experience_from_raw_data(raw_data)
+            if not experience:
+                continue
+
+            quality_score = self.calculate_quality_score(experience)
+            if quality_score < self.config["min_quality_score"]:
+                logger.info("经验质量分%.2f低于阈值%.2f，不予入库", quality_score, self.config["min_quality_score"])
+                continue
+
+            accepted_experiences.append(experience)
+            accepted_scores.append(quality_score)
+
+        success_ids = self.graph_ops.add_experiences_batch(accepted_experiences)
+
+        for exp_id, quality_score in zip(success_ids, accepted_scores):
+            logger.info("经验%s入库成功，质量分: %.2f", exp_id, quality_score)
+
         return success_ids
     
     def update_experience_after_use(self, experience_id: str, is_success: bool, benefit: float) -> bool:
@@ -165,10 +185,10 @@ class ExperienceManager:
             for exp_id in outdated_ids:
                 if self.graph_ops.delete_experience(exp_id):
                     deleted_ids.append(exp_id)
-            print(f"已清理{len(deleted_ids)}条过期经验")
+            logger.info("已清理%s条过期经验", len(deleted_ids))
             return deleted_ids
         else:
-            print(f"识别到{len(outdated_ids)}条待清理过期经验，需确认后删除")
+            logger.info("识别到%s条待清理过期经验，需确认后删除", len(outdated_ids))
             return outdated_ids
     
     def calculate_health_score(self) -> Dict[str, Any]:
@@ -237,10 +257,10 @@ class ExperienceManager:
             data = self.graph_ops.graph.model_dump_json(indent=2, exclude_none=True)
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(data)
-            print(f"经验库已导出到: {output_path}")
+            logger.info("经验库已导出到: %s", output_path)
             return True
         except Exception as e:
-            print(f"导出经验库失败: {str(e)}")
+            logger.error("导出经验库失败: %s", str(e))
             return False
     
     def import_experience_library(self, input_path: str) -> bool:
@@ -249,8 +269,8 @@ class ExperienceManager:
             with open(input_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
             self.graph_ops.graph = ExperienceGraph(**data)
-            print(f"经验库导入成功，共{len(self.graph_ops.graph.experience_nodes)}条经验")
+            logger.info("经验库导入成功，共%s条经验", len(self.graph_ops.graph.experience_nodes))
             return True
         except Exception as e:
-            print(f"导入经验库失败: {str(e)}")
+            logger.error("导入经验库失败: %s", str(e))
             return False

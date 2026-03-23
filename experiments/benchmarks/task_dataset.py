@@ -960,15 +960,31 @@ class TaskDataset:
         dataset = cls()
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
+
+        # 兼容两种格式：
+        # 1) 旧格式：[{...}, {...}]
+        # 2) 扩展格式：{"tasks": [{...}, {...}], ...}
+        if isinstance(data, dict):
+            data = data.get("tasks", [])
+        if not isinstance(data, list):
+            raise ValueError("数据集JSON格式不正确：应为任务列表或包含tasks字段的对象")
         
         for task_dict in data:
+            raw_type = task_dict.get("task_type", TaskType.CODE_GENERATION.value)
+            try:
+                task_type = TaskType(raw_type)
+            except ValueError:
+                # 兼容扩展任务类型，回退为代码生成以保证评测流程可运行。
+                task_type = TaskType.CODE_GENERATION
+
+            description = task_dict.get("description") or task_dict.get("requirement", "")
             task = EvaluationTask(
                 task_id=task_dict["task_id"],
-                task_type=TaskType(task_dict["task_type"]),
+                task_type=task_type,
                 name=task_dict["name"],
-                description=task_dict["description"],
+                description=description,
                 requirement=task_dict["requirement"],
-                test_cases=task_dict["test_cases"],
+                test_cases=task_dict.get("test_cases", []),
                 expected_output=task_dict.get("expected_output"),
                 difficulty=task_dict.get("difficulty", 3),
                 domain_tags=task_dict.get("domain_tags", []),

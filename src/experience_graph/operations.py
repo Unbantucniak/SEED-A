@@ -12,6 +12,8 @@ class GraphOperations:
         self.graph = graph or ExperienceGraph()
         cfg = config or get_config_section("experience_graph")
         self.similarity_threshold = float(cfg.get("similarity_threshold", 0.7))
+        self.max_experience_count = int(cfg.get("max_experience_count", 100000))
+        self.auto_add_similarity_edges = bool(cfg.get("auto_add_similarity_edges", True))
 
         vectorizer_mode = str(cfg.get("vectorizer_mode", "char_wb")).lower()
         ngram_min = int(cfg.get("vectorizer_ngram_min", 2))
@@ -42,12 +44,50 @@ class GraphOperations:
     
     def add_experience(self, experience: ExperienceUnit) -> str:
         """添加经验节点"""
+        # 防止经验库无上限增长导致内存和检索退化。
+        while len(self.graph.experience_nodes) >= self.max_experience_count:
+            oldest_exp_id = min(
+                self.graph.experience_nodes,
+                key=lambda exp_id: self.graph.experience_nodes[exp_id].created_at,
+            )
+            self.delete_experience(oldest_exp_id)
+
         self.graph.experience_nodes[experience.experience_id] = experience
         self.graph.updated_at = datetime.now()
         self._update_vectorizer()
         # 自动计算与现有经验的相似度边
-        self._auto_add_similarity_edges(experience.experience_id)
+        if self.auto_add_similarity_edges:
+            self._auto_add_similarity_edges(experience.experience_id)
         return experience.experience_id
+
+    def add_experiences_batch(self, experiences: List[ExperienceUnit], auto_link: Optional[bool] = None) -> List[str]:
+        """批量添加经验，减少重复索引重建开销。"""
+        if not experiences:
+            return []
+
+        target_size = len(self.graph.experience_nodes) + len(experiences)
+        while target_size > self.max_experience_count and self.graph.experience_nodes:
+            oldest_exp_id = min(
+                self.graph.experience_nodes,
+                key=lambda exp_id: self.graph.experience_nodes[exp_id].created_at,
+            )
+            self.delete_experience(oldest_exp_id)
+            target_size -= 1
+
+        exp_ids: List[str] = []
+        for exp in experiences:
+            self.graph.experience_nodes[exp.experience_id] = exp
+            exp_ids.append(exp.experience_id)
+
+        self.graph.updated_at = datetime.now()
+        self._update_vectorizer()
+
+        should_auto_link = self.auto_add_similarity_edges if auto_link is None else auto_link
+        if should_auto_link:
+            for exp_id in exp_ids:
+                self._auto_add_similarity_edges(exp_id)
+
+        return exp_ids
     
     def get_experience(self, experience_id: str) -> Optional[ExperienceUnit]:
         """获取经验节点"""
@@ -109,18 +149,23 @@ class GraphOperations:
         new_exp = self.get_experience(new_exp_id)
         if not new_exp or len(self.graph.experience_nodes) < 2:
             return
-        
-        # 计算新经验与所有其他经验的相似度
-        new_text = f"{new_exp.task_intent.original_requirement} {new_exp.task_intent.user_instruction}"
-        new_vec = self.vectorizer.transform([new_text])
-        
-        for exp_id, exp in self.graph.experience_nodes.items():
+
+        # 一次性向量化所有文本，避免逐条 transform 的重复开销。
+        exp_ids = list(self.graph.experience_nodes.keys())
+        texts = [
+            f"{self.graph.experience_nodes[exp_id].task_intent.original_requirement} "
+            f"{self.graph.experience_nodes[exp_id].task_intent.user_instruction}"
+            for exp_id in exp_ids
+        ]
+        vectors = self.vectorizer.transform(texts)
+
+        new_idx = exp_ids.index(new_exp_id)
+        similarities = cosine_similarity(vectors[new_idx], vectors)[0]
+
+        for idx, exp_id in enumerate(exp_ids):
             if exp_id == new_exp_id:
                 continue
-            exp_text = f"{exp.task_intent.original_requirement} {exp.task_intent.user_instruction}"
-            exp_vec = self.vectorizer.transform([exp_text])
-            similarity = float(cosine_similarity(new_vec, exp_vec)[0][0])
-            similarity = max(0.0, min(1.0, similarity))
+            similarity = max(0.0, min(1.0, float(similarities[idx])))
             if similarity > self.similarity_threshold:
                 self.add_edge(new_exp_id, exp_id, "similarity", similarity)
     

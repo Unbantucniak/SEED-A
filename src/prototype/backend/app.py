@@ -37,6 +37,13 @@ class AddExperienceRequest(BaseModel):
     domain_tags: List[str] = None
     dependency_versions: Dict[str, str] = None
 
+
+class RecommendRequest(BaseModel):
+    query: Optional[str] = None
+    current_code: Optional[str] = None
+    language: Optional[str] = None
+    top_k: int = 5
+
 @app.get("/api/health")
 async def health_check():
     """健康检查接口"""
@@ -66,6 +73,40 @@ async def search_experience(request: SearchRequest):
         ]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"搜索失败: {str(e)}")
+
+
+@app.post("/api/experience/recommend")
+async def recommend_experience(request: RecommendRequest):
+    """基于当前编辑上下文实时推荐经验。"""
+    try:
+        query_parts: List[str] = []
+        if request.query:
+            query_parts.append(request.query)
+        if request.language:
+            query_parts.append(f"language:{request.language}")
+        if request.current_code:
+            query_parts.append(request.current_code)
+
+        query = "\n".join(part.strip() for part in query_parts if part and part.strip())
+        if not query:
+            raise HTTPException(status_code=400, detail="推荐请求缺少可用上下文")
+
+        results = experience_manager.graph_ops.semantic_search(query, top_k=request.top_k)
+        return [
+            {
+                "experience_id": res["experience_id"],
+                "task_type": res["experience"].task_intent.task_type,
+                "requirement": res["experience"].task_intent.original_requirement,
+                "suggestion": res["experience"].execution_result.final_output,
+                "similarity": res["similarity"],
+                "composite_score": res["composite_score"],
+            }
+            for res in results
+        ]
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"推荐失败: {str(e)}")
 
 @app.post("/api/experience/add")
 async def add_experience(request: AddExperienceRequest):

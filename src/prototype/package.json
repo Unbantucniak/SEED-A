@@ -26,6 +26,10 @@
         "title": "智能助手：保存当前交互为经验"
       },
       {
+        "command": "self-evolution-agent.recommendExperience",
+        "title": "智能助手：基于当前上下文推荐经验"
+      },
+      {
         "command": "self-evolution-agent.showExperienceLibrary",
         "title": "智能助手：打开经验库面板"
       }
@@ -60,6 +64,13 @@
           "type": "boolean",
           "default": true,
           "description": "是否自动保存成功的交互为经验"
+        },
+        "self-evolution-agent.suggestionCount": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "实时经验推荐数量"
         }
       }
     }

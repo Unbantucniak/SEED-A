@@ -1,0 +1,18 @@
+# G1 fixed experiment parameters (100+ tasks)
+# Usage:
+# cd experiments
+# py run_g1_experiment.py --rebuild-dataset
+
+[run]
+rounds = 5
+seed = 42
+simulate_latency = false
+log_level = "INFO"
+
+[dataset]
+target_count = 120
+dataset_json = "./benchmarks/g1_full_120_tasks.json"
+source_expanded_json = ""
+
+[output]
+output_dir = "../results"

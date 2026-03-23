@@ -4,8 +4,12 @@
 """
 from typing import List, Optional, Dict
 import numpy as np
+import logging
 from datetime import datetime
 from .model import ExperienceUnit, ExperienceGraph, ExperienceEdge
+
+
+logger = logging.getLogger(__name__)
 
 
 class VectorEmbedder:
@@ -206,6 +210,7 @@ class HybridVectorStore:
             # 混合相似度
             r["hybrid_similarity"] = alpha * r["dense_similarity"] + (1 - alpha) * tfidf_sim
             r["similarity"] = r["hybrid_similarity"]
+            exp = r["experience"]
             
             # 综合得分
             score = (
@@ -279,8 +284,8 @@ class GraphNeuralNetworkReasoner:
                     source_text = f"{source_exp.task_intent.original_requirement} {source_exp.task_intent.user_instruction}"
                     target_text = f"{target_exp.task_intent.original_requirement} {target_exp.task_intent.user_instruction}"
                     semantic_score = self.embedder.compute_similarity(source_text, target_text)
-                except:
-                    pass
+                except (RuntimeError, ValueError, TypeError) as exc:
+                    logger.debug("语义相似度增强失败，回退到边权推理: %s", exc)
             
             # 3. 综合推理得分
             total_score = edge_score * 0.6 + semantic_score * 0.4

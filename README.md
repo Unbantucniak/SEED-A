@@ -105,6 +105,64 @@ python run_experiment.py --rounds 1 --simulate-latency
 
 When `--rounds > 1`, the generated report includes stability metrics (mean success rate, standard deviation, and 95% confidence interval across rounds).
 
+### 5) Run G1 (100+ tasks, fixed params)
+
+```bash
+cd experiments
+py run_g1_experiment.py --rebuild-dataset
+```
+
+This command will:
+- build a fixed `120`-task dataset at `experiments/benchmarks/g1_full_120_tasks.json`,
+- run the baseline comparison with frozen parameters,
+- write outputs to `results/`.
+
+Reference config file:
+- `experiments/experiment_params.g1.toml`
+
+### 6) Run G2 (multi-seed significance + effect size)
+
+```bash
+cd experiments
+py run_g2_analysis.py --seeds 11,22,33,44,55 --rounds 1
+```
+
+This command will:
+- run all baselines across multiple random seeds on the fixed dataset,
+- compute Mann-Whitney U significance and Cliff's delta effect sizes,
+- export `g2_stats_*.json` and `g2_stats_*_report.md` under `results/`.
+
+### 7) Run G3 (routing ablation)
+
+```bash
+cd experiments
+py run_g3_ablation.py --seeds 11,22,33 --rounds 1
+```
+
+This command will:
+- run route ablation scenarios (strategy disable + weight variants),
+- compare `ours_proposed_scheme` metrics across scenarios,
+- export `g3_ablation_*.json` and `g3_ablation_*_report.md` under `results/`.
+
+### 8) Experiment Process Log (new)
+
+All experiment entries now append a process/result record to `experiment_run_log.md` in the corresponding output directory.
+
+Included scripts:
+- `experiments/run_experiment.py`
+- `experiments/run_g1_experiment.py`
+- `experiments/run_g2_analysis.py`
+- `experiments/run_g3_ablation.py`
+
+Each record includes:
+- run timestamp and title,
+- full parameters,
+- output files and key result pointers.
+
+Output path notes:
+- For `run_g3_ablation.py`, default paths remain script-relative for backward compatibility.
+- If you pass custom relative paths (for example `--output-dir experiments/results` from repo root), they are resolved against the current working directory.
+
 ## Configuration
 
 SEED-A uses `config.toml` as the single configuration entry.

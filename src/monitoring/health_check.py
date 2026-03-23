@@ -1,7 +1,7 @@
 """
 监控模块 - 健康检查
 """
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Callable
 from datetime import datetime, timedelta
 from dataclasses import dataclass
 from enum import Enum
@@ -25,10 +25,10 @@ class HealthChecker:
     """健康检查器"""
     
     def __init__(self):
-        self.checks: Dict[str, callable] = {}
+        self.checks: Dict[str, Callable[[], Any]] = {}
         self.last_results: List[HealthCheckResult] = []
     
-    def register_check(self, name: str, check_func: callable):
+    def register_check(self, name: str, check_func: Callable[[], Any]):
         """注册健康检查函数"""
         self.checks[name] = check_func
     
@@ -108,7 +108,7 @@ class HealthChecker:
 
 
 # 预定义健康检查
-def create_experience_graph_health_check(graph) -> callable:
+def create_experience_graph_health_check(graph) -> Callable[[], Any]:
     """创建经验图谱健康检查"""
     def check():
         if not graph:
@@ -132,7 +132,7 @@ def create_experience_graph_health_check(graph) -> callable:
     
     return check
 
-def create_experience_quality_health_check(manager) -> callable:
+def create_experience_quality_health_check(manager) -> Callable[[], Any]:
     """创建经验质量健康检查"""
     def check():
         if not manager:
@@ -175,7 +175,7 @@ def create_experience_quality_health_check(manager) -> callable:
     
     return check
 
-def create_routing_health_check(router) -> callable:
+def create_routing_health_check(router) -> Callable[[], Any]:
     """创建路由引擎健康检查"""
     def check():
         if not router:
