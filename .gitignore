@@ -1,0 +1,35 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs and local runtime
+logs/
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Local experiment artifacts
+results/
+experiments/results/
+models/
+
+# Exclude project documentation files for initial GitHub upload
+技术研究报告初稿.md
+项目最终交付总览.md
+项目优化修复清单.md
+自学习自演化智能体的经验积累与演化方法研究.pdf
+大创项目答辩.pptx

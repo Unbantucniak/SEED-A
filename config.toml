@@ -1,0 +1,118 @@
+# 自学习自演化智能体经验管理系统 - 配置文件
+# 请根据实际部署环境修改以下配置
+
+## 1. 基础配置
+[base]
+# 项目名称
+project_name = "自学习自演化智能体经验管理系统"
+# 版本号
+version = "1.0.0"
+# 项目根目录
+project_root = "./"
+
+## 2. 经验图谱配置
+[experience_graph]
+# 最大经验存储数量
+max_experience_count = 100000
+# 相似度阈值（超过此值自动建立相似边）
+similarity_threshold = 0.7
+# 向量嵌入模型
+embedding_model = "BAAI/bge-base-zh-v1.5"
+# 是否使用混合向量检索
+use_hybrid_retrieval = true
+# 混合检索中向量搜索的权重
+dense_weight = 0.7
+
+## 3. 经验管理配置
+[experience_manager]
+# 入库最低质量分
+min_quality_score = 0.5
+# 时效性淘汰阈值
+timeliness_threshold = 0.2
+# 成功率淘汰阈值
+success_rate_threshold = 0.3
+# 未使用天数淘汰阈值
+unused_days_threshold = 365
+# 健康检查间隔（天）
+health_check_interval_days = 7
+# 是否启用LLM-as-Judge
+enable_llm_judge = false
+# 是否启用对抗性验证
+enable_adversarial_validation = true
+
+## 4. 路由引擎配置
+[routing_engine]
+# 策略权重配置
+expected_benefit_weight = 0.4
+success_probability_weight = 0.3
+resource_cost_weight = 0.2
+response_speed_weight = 0.1
+# 是否启用强化学习
+enable_rl = true
+# 探索率
+epsilon = 0.1
+# 学习率
+learning_rate = 0.01
+# 折扣因子
+gamma = 0.95
+# 内化候选最小使用次数
+internalization_min_use_count = 10
+# 内化候选最小成功率
+internalization_min_success_rate = 0.8
+
+## 5. LLM配置
+[llm]
+# 默认LLM提供者
+default_provider = "openai"
+# API密钥（请通过环境变量设置）
+# api_key = ${OPENAI_API_KEY}
+# 模型名称
+model_name = "gpt-4"
+# temperature参数
+temperature = 0.7
+# 最大token数
+max_tokens = 2000
+
+## 6. Redis缓存配置
+[redis]
+# 是否启用Redis
+enable_redis = false
+# Redis连接URL
+redis_url = "redis://localhost:6379/0"
+# 缓存TTL（秒）
+cache_ttl = 300
+# 搜索结果缓存TTL
+search_cache_ttl = 600
+
+## 7. 实验配置
+[experiment]
+# 基准数据集路径
+benchmarks_path = "./experiments/benchmarks"
+# 基线方案路径
+baselines_path = "./experiments/baselines"
+# 结果输出路径
+results_path = "./experiments/results"
+# 默认实验轮数
+default_rounds = 3
+
+## 8. VS Code插件配置
+[plugin]
+# 后端服务地址
+backend_url = "http://localhost:8000"
+# 是否启用自动保存
+auto_save = true
+# 建议显示数量
+suggestion_count = 5
+
+## 9. 日志配置
+[logging]
+# 日志级别
+level = "INFO"
+# 日志格式
+format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+# 日志文件路径
+file = "./logs/experience_system.log"
+# 最大文件大小（MB）
+max_file_size = 10
+# 备份数量
+backup_count = 5

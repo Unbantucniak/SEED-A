@@ -1,0 +1,498 @@
+{
+  "version": "1.0",
+  "description": "扩展版评测任务数据集 - 50+任务",
+  "task_types": ["code_generation", "bug_fix", "requirement_decomposition", "code_review", "test_generation"],
+  "tasks": [
+    {
+      "task_id": "cg_001",
+      "task_type": "code_generation",
+      "name": "快速排序实现",
+      "difficulty": 2,
+      "domain_tags": ["Python", "算法", "排序"],
+      "requirement": "实现Python快速排序函数，支持整数列表排序，返回升序排列结果",
+      "test_cases": [
+        {"input": [3,1,4,1,5,9,2,6], "expected": [1,1,2,3,4,5,6,9]},
+        {"input": [], "expected": []},
+        {"input": [5,4,3,2,1], "expected": [1,2,3,4,5]}
+      ]
+    },
+    {
+      "task_id": "cg_002",
+      "task_type": "code_generation",
+      "name": "斐波那契数列",
+      "difficulty": 1,
+      "domain_tags": ["Python", "算法"],
+      "requirement": "写一个Python函数计算第n个斐波那契数，n从0开始，F(0)=0, F(1)=1",
+      "test_cases": [
+        {"input": 0, "expected": 0},
+        {"input": 1, "expected": 1},
+        {"input": 10, "expected": 55}
+      ]
+    },
+    {
+      "task_id": "cg_003",
+      "task_type": "code_generation",
+      "name": "二分查找",
+      "difficulty": 2,
+      "domain_tags": ["Python", "算法", "查找"],
+      "requirement": "实现二分查找函数，在有序列表中查找目标值，返回索引或-1",
+      "test_cases": [
+        {"input": {"arr": [1,2,3,4,5], "target": 3}, "expected": 2},
+        {"input": {"arr": [1,2,3,4,5], "target": 6}, "expected": -1}
+      ]
+    },
+    {
+      "task_id": "cg_004",
+      "task_type": "code_generation",
+      "name": "链表反转",
+      "difficulty": 2,
+      "domain_tags": ["Python", "数据结构", "链表"],
+      "requirement": "实现单链表反转函数",
+      "test_cases": [
+        {"input": [1,2,3,4,5], "expected": [5,4,3,2,1]},
+        {"input": [1], "expected": [1]}
+      ]
+    },
+    {
+      "task_id": "cg_005",
+      "task_type": "code_generation",
+      "name": "LRU缓存实现",
+      "difficulty": 3,
+      "domain_tags": ["Python", "数据结构", "缓存"],
+      "requirement": "实现LRU缓存类，支持get和put操作",
+      "test_cases": [
+        {"input": {"capacity": 2, "ops": [["put",1,1],["put",2,2],["get",1],["put",3,3],["get",2]]}, "expected": [1,-1]}      ]
+    },
+    {
+      "task_id": "cg_006",
+      "task_type": "code_generation",
+      "name": "合并两个有序列表",
+      "difficulty": 2,
+      "domain_tags": ["Python", "算法", "排序"],
+      "requirement": "合并两个有序列表为一个有序列表",
+      "test_cases": [
+        {"input": {"l1": [1,2,4], "l2": [1,3,4]}, "expected": [1,1,2,3,4,4]},
+        {"input": {"l1": [], "l2": []}, "expected": []}
+      ]
+    },
+    {
+      "task_id": "cg_007",
+      "task_type": "code_generation",
+      "name": "有效的括号",
+      "difficulty": 2,
+      "domain_tags": ["Python", "算法", "栈"],
+      "requirement": "判断括号字符串是否有效",
+      "test_cases": [
+        {"input": "()", "expected": true},
+        {"input": "()[]{}", "expected": true},
+        {"input": "(]", "expected": false}
+      ]
+    },
+    {
+      "task_id": "cg_008",
+      "task_type": "code_generation",
+      "name": "最大子数组和",
+      "difficulty": 3,
+      "domain_tags": ["Python", "算法", "动态规划"],
+      "requirement": "求连续子数组的最大和",
+      "test_cases": [
+        {"input": [-2,1,-3,4,-1,2,1,-5,4], "expected": 6},
+        {"input": [1], "expected": 1}
+      ]
+    },
+    {
+      "task_id": "cg_009",
+      "task_type": "code_generation",
+      "name": "两数之和",
+      "difficulty": 1,
+      "domain_tags": ["Python", "算法", "查找"],
+      "requirement": "在数组中找出两数之和等于目标值的索引",
+      "test_cases": [
+        {"input": {"nums": [2,7,11,15], "target": 9}, "expected": [0,1]}
+      ]
+    },
+    {
+      "task_id": "cg_010",
+      "task_type": "code_generation",
+      "name": "反转字符串",
+      "difficulty": 1,
+      "domain_tags": ["Python", "字符串"],
+      "requirement": "反转字符串",
+      "test_cases": [
+        {"input": "hello", "expected": "olleh"},
+        {"input": "a", "expected": "a"}
+      ]
+    },
+    {
+      "task_id": "cg_011",
+      "task_type": "code_generation",
+      "name": "JSON解析器",
+      "difficulty": 4,
+      "domain_tags": ["Python", "解析器"],
+      "requirement": "实现一个简单的JSON解析器",
+      "test_cases": [
+        {"input": '{"a":1}', "expected": {"a": 1}},
+        {"input": "[1,2,3]", "expected": [1,2,3]}
+      ]
+    },
+    {
+      "task_id": "cg_012",
+      "task_type": "code_generation",
+      "name": "二叉树遍历",
+      "difficulty": 2,
+      "domain_tags": ["Python", "数据结构", "二叉树"],
+      "requirement": "实现二叉树的前序遍历",
+      "test_cases": [
+        {"input": [1,null,2,3], "expected": [1,2,3]}
+      ]
+    },
+    {
+      "task_id": "cg_013",
+      "task_type": "code_generation",
+      "name": "盛最多水的容器",
+      "difficulty": 3,
+      "domain_tags": ["Python", "算法", "双指针"],
+      "requirement": "求容器能盛最多的水",
+      "test_cases": [
+        {"input": [1,8,6,2,5,4,8,3,7], "expected": 49}
+      ]
+    },
+    {
+      "task_id": "cg_014",
+      "task_type": "code_generation",
+      "name": "爬楼梯",
+      "difficulty": 2,
+      "domain_tags": ["Python", "算法", "动态规划"],
+      "requirement": "爬楼梯，每次1或2步",
+      "test_cases": [
+        {"input": 2, "expected": 2},
+        {"input": 3, "expected": 3}
+      ]
+    },
+    {
+      "task_id": "cg_015",
+      "task_type": "code_generation",
+      "name": "实现strStr",
+      "difficulty": 2,
+      "domain_tags": ["Python", "字符串", "匹配"],
+      "requirement": "实现子串查找",
+      "test_cases": [
+        {"input": {"haystack": "hello", "needle": "ll"}, "expected": 2},
+        {"input": {"haystack": "aaaaa", "needle": "bba"}, "expected": -1}
+      ]
+    },
+    {
+      "task_id": "cg_016",
+      "task_type": "code_generation",
+      "name": "最大公约数",
+      "difficulty": 1,
+      "domain_tags": ["Python", "数学"],
+      "requirement": "实现欧几里得算法求最大公约数",
+      "test_cases": [
+        {"input": {"a": 48, "b": 18}, "expected": 6}
+      ]
+    },
+    {
+      "task_id": "cg_017",
+      "task_type": "code_generation",
+      "name": "回文数判断",
+      "difficulty": 1,
+      "domain_tags": ["Python", "字符串"],
+      "requirement": "判断是否为回文数",
+      "test_cases": [
+        {"input": 121, "expected": true},
+        {"input": -121, "expected": false}
+      ]
+    },
+    {
+      "task_id": "cg_018",
+      "task_type": "code_generation",
+      "name": "罗马数字转整数",
+      "difficulty": 2,
+      "domain_tags": ["Python", "字符串", "哈希"],
+      "requirement": "罗马数字转整数",
+      "test_cases": [
+        {"input": "III", "expected": 3},
+        {"input": "LVIII", "expected": 58}
+      ]
+    },
+    {
+      "task_id": "cg_019",
+      "task_type": "code_generation",
+      "name": "最接近的三数之和",
+      "difficulty": 3,
+      "domain_tags": ["Python", "算法", "双指针"],
+      "requirement": "找最接近目标的三数之和",
+      "test_cases": [
+        {"input": {"nums": [-1,2,1,-4], "target": 1}, "expected": 2}
+      ]
+    },
+    {
+      "task_id": "cg_020",
+      "task_type": "code_generation",
+      "name": "字母异位词分组",
+      "difficulty": 2,
+      "domain_tags": ["Python", "哈希", "字符串"],
+      "requirement": "分组字母异位词",
+      "test_cases": [
+        {"input": ["eat","tea","tan","ate","nat","bat"], "expected": [["eat","tea","ate"],["tan","nat"],["bat"]]}
+      ]
+    },
+    {
+      "task_id": "bf_001",
+      "task_type": "bug_fix",
+      "name": "修复排序函数bug",
+      "difficulty": 2,
+      "domain_tags": ["Python", "bug修复", "排序"],
+      "requirement": "修复冒泡排序函数中的边界问题",
+      "test_cases": [
+        {"input": [], "expected": []},
+        {"input": [3,1,2], "expected": [1,2,3]}
+      ]
+    },
+    {
+      "task_id": "bf_002",
+      "task_type": "bug_fix",
+      "name": "修复空指针异常",
+      "difficulty": 2,
+      "domain_tags": ["Python", "bug修复", "空值"],
+      "requirement": "修复空列表处理时的IndexError",
+      "test_cases": [
+        {"input": [], "expected": null}
+      ]
+    },
+    {
+      "task_id": "bf_003",
+      "task_type": "bug_fix",
+      "name": "修复内存泄漏",
+      "difficulty": 4,
+      "domain_tags": ["Python", "bug修复", "内存"],
+      "requirement": "修复大数据处理时的内存泄漏问题",
+      "test_cases": [
+        {"input": 1000000, "expected": "success"}
+      ]
+    },
+    {
+      "task_id": "bf_004",
+      "task_type": "bug_fix",
+      "name": "修复并发竞态",
+      "difficulty": 4,
+      "domain_tags": ["Python", "bug修复", "并发"],
+      "requirement": "修复多线程访问共享资源的竞态条件",
+      "test_cases": [
+        {"input": 1000, "expected": 1000}
+      ]
+    },
+    {
+      "task_id": "bf_005",
+      "task_type": "bug_fix",
+      "name": "修复SQL注入漏洞",
+      "difficulty": 3,
+      "domain_tags": ["Python", "安全", "SQL"],
+      "requirement": "修复SQL注入安全漏洞",
+      "test_cases": [
+        {"input": "'; DROP TABLE users;--", "expected": "safe"}
+      ]
+    },
+    {
+      "task_id": "bf_006",
+      "task_type": "bug_fix",
+      "name": "修复缓存不一致",
+      "difficulty": 3,
+      "domain_tags": ["Python", "缓存", "一致性"],
+      "requirement": "修复缓存与数据库数据不一致问题",
+      "test_cases": []
+    },
+    {
+      "task_id": "bf_007",
+      "task_type": "bug_fix",
+      "name": "修复正则表达式性能",
+      "difficulty": 3,
+      "domain_tags": ["Python", "正则", "性能"],
+      "requirement": "修复导致回溯的正则表达式",
+      "test_cases": []
+    },
+    {
+      "task_id": "bf_008",
+      "task_type": "bug_fix",
+      "name": "修复日期时区处理",
+      "difficulty": 2,
+      "domain_tags": ["Python", "时区", "日期"],
+      "requirement": "修复跨时区日期转换错误",
+      "test_cases": []
+    },
+    {
+      "task_id": "bf_009",
+      "task_type": "bug_fix",
+      "name": "修复浮点数精度",
+      "difficulty": 2,
+      "domain_tags": ["Python", "浮点数", "精度"],
+      "requirement": "修复浮点数加减精度丢失",
+      "test_cases": [
+        {"input": 0.1 + 0.2, "expected": 0.3}
+      ]
+    },
+    {
+      "task_id": "bf_010",
+      "task_type": "bug_fix",
+      "name": "修复文件描述符泄漏",
+      "difficulty": 3,
+      "domain_tags": ["Python", "资源泄漏"],
+      "requirement": "修复文件未正确关闭问题",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_001",
+      "task_type": "requirement_decomposition",
+      "name": "待办清单应用分解",
+      "difficulty": 3,
+      "domain_tags": ["需求分析", "Web开发"],
+      "requirement": "开发一个Web版待办清单应用，支持用户注册登录、添加/删除/修改待办、标记完成、分类管理功能，使用Python Flask后端和React前端",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_002",
+      "task_type": "requirement_decomposition",
+      "name": "电商系统分解",
+      "difficulty": 4,
+      "domain_tags": ["需求分析", "电商"],
+      "requirement": "设计一个完整的电商系统，包括用户、商品、订单、支付、物流模块",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_003",
+      "task_type": "requirement_decomposition",
+      "name": "即时通讯系统分解",
+      "difficulty": 4,
+      "domain_tags": ["需求分析", "IM"],
+      "requirement": "设计即时通讯系统，支持单聊、群聊、文件传输、语音视频通话",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_004",
+      "task_type": "requirement_decomposition",
+      "name": "博客系统分解",
+      "difficulty": 3,
+      "domain_tags": ["需求分析", "CMS"],
+      "requirement": "设计博客系统，支持文章发布、评论、标签、搜索、用户管理",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_005",
+      "task_type": "requirement_decomposition",
+      "name": "在线教育平台分解",
+      "difficulty": 5,
+      "domain_tags": ["需求分析", "教育"],
+      "requirement": "设计在线教育平台，支持课程管理、视频播放、作业提交、考试测评、学习进度跟踪",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_006",
+      "task_type": "requirement_decomposition",
+      "name": "智能家居系统分解",
+      "difficulty": 4,
+      "domain_tags": ["需求分析", "IoT"],
+      "requirement": "设计智能家居控制系统，支持设备控制、场景联动、定时任务、远程监控",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_007",
+      "task_type": "requirement_decomposition",
+      "name": "数据分析平台分解",
+      "difficulty": 4,
+      "domain_tags": ["需求分析", "大数据"],
+      "requirement": "设计数据分析平台，支持数据采集、清洗、可视化、报表生成",
+      "test_cases": []
+    },
+    {
+      "task_id": "rd_008",
+      "task_type": "requirement_decomposition",
+      "name": "企业资源规划系统分解",
+      "difficulty": 5,
+      "domain_tags": ["需求分析", "ERP"],
+      "requirement": "设计ERP系统，涵盖财务、人力资源、供应链、生产制造模块",
+      "test_cases": []
+    },
+    {
+      "task_id": "cr_001",
+      "task_type": "code_review",
+      "name": "代码审查-安全性",
+      "difficulty": 3,
+      "domain_tags": ["代码审查", "安全"],
+      "requirement": "审查代码中的安全漏洞",
+      "test_cases": []
+    },
+    {
+      "task_id": "cr_002",
+      "task_type": "code_review",
+      "name": "代码审查-性能",
+      "difficulty": 3,
+      "domain_tags": ["代码审查", "性能"],
+      "requirement": "审查代码中的性能问题",
+      "test_cases": []
+    },
+    {
+      "task_id": "cr_003",
+      "task_type": "code_review",
+      "name": "代码审查-可维护性",
+      "difficulty": 2,
+      "domain_tags": ["代码审查", "可维护性"],
+      "requirement": "审查代码可维护性问题",
+      "test_cases": []
+    },
+    {
+      "task_id": "cr_004",
+      "task_type": "code_review",
+      "name": "代码审查-并发安全",
+      "difficulty": 4,
+      "domain_tags": ["代码审查", "并发"],
+      "requirement": "审查并发代码的线程安全问题",
+      "test_cases": []
+    },
+    {
+      "task_id": "tg_001",
+      "task_type": "test_generation",
+      "name": "单元测试生成",
+      "difficulty": 2,
+      "domain_tags": ["测试", "单元测试"],
+      "requirement": "为排序函数生成单元测试",
+      "test_cases": []
+    },
+    {
+      "task_id": "tg_002",
+      "task_type": "test_generation",
+      "name": "集成测试生成",
+      "difficulty": 3,
+      "domain_tags": ["测试", "集成测试"],
+      "requirement": "为API接口生成集成测试",
+      "test_cases": []
+    },
+    {
+      "task_id": "tg_003",
+      "task_type": "test_generation",
+      "name": "端到端测试生成",
+      "difficulty": 3,
+      "domain_tags": ["测试", "E2E"],
+      "requirement": "为用户登录流程生成E2E测试",
+      "test_cases": []
+    },
+    {
+      "task_id": "tg_004",
+      "task_type": "test_generation",
+      "name": "性能测试生成",
+      "difficulty": 4,
+      "domain_tags": ["测试", "性能"],
+      "requirement": "为搜索功能生成压力测试",
+      "test_cases": []
+    },
+    {
+      "task_id": "tg_005",
+      "task_type": "test_generation",
+      "name": "模糊测试生成",
+      "difficulty": 4,
+      "domain_tags": ["测试", "模糊测试"],
+      "requirement": "为输入解析器生成模糊测试",
+      "test_cases": []
+    }
+  ]
+}

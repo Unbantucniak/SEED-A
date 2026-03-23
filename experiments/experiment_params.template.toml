@@ -1,0 +1,17 @@
+# 结题推荐实验参数模板
+# 使用方法：
+# cd experiments
+# python run_experiment.py --rounds 5 --seed 42 --dataset-json ./benchmarks/expanded_tasks.json --output-dir ../results
+
+[run]
+rounds = 5
+seed = 42
+simulate_latency = false
+
+# 可选：使用外部数据集（留空表示使用内置样例任务）
+dataset_json = "./benchmarks/expanded_tasks.json"
+output_dir = "../results"
+
+[report]
+# 建议至少 3 轮，保证稳定性统计有参考意义
+minimum_rounds_for_stability = 3

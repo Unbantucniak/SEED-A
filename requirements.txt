@@ -1,0 +1,36 @@
+# 自学习自演化智能体经验管理系统
+# 项目依赖配置文件
+
+# 核心依赖
+pydantic>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+tqdm>=4.65.0
+pandas>=2.0.0
+matplotlib>=3.7.0
+
+# 向量嵌入模型
+sentence-transformers>=2.2.0
+
+# 实验框架
+# langchain>=0.1.0
+# langchain-openai>=0.0.2
+# autogen>=0.2.0
+
+# 测试与工具
+pytest>=8.0.0
+pypdf>=4.0.0
+
+# Web服务 (原型系统后端)
+fastapi>=0.100.0
+uvicorn>=0.23.0
+
+# VS Code插件 (原型系统前端)
+# node.js项目，请在src/prototype目录执行npm install
+
+# 可选: Redis缓存
+redis>=4.5.0
+
+# 可选: LLM提供者
+# openai>=1.0.0
+# anthropic>=0.18.0
