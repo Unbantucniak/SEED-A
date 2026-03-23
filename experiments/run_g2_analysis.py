@@ -24,7 +24,12 @@ from baselines.impl_baselines import (
 )
 from experiment_runner import ExperimentRunner
 from build_g1_dataset import build_dataset
+from path_resolver import resolve_dataset_path, resolve_output_dir
 from run_logger import append_run_log
+
+
+DEFAULT_DATASET_JSON = "./benchmarks/g1_full_120_tasks.json"
+DEFAULT_OUTPUT_DIR = "../results"
 
 
 def parse_args() -> argparse.Namespace:
@@ -39,11 +44,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--dataset-json",
         type=str,
-        default="./benchmarks/g1_full_120_tasks.json",
+        default=DEFAULT_DATASET_JSON,
         help="Dataset path used for multi-seed runs",
     )
     parser.add_argument("--target-count", type=int, default=120, help="Build dataset size if missing")
-    parser.add_argument("--output-dir", type=str, default="../results", help="Output directory")
+    parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR, help="Output directory")
     parser.add_argument("--log-level", type=str, default="WARNING", help="Reserved for compatibility")
     return parser.parse_args()
 
@@ -249,7 +254,8 @@ def main() -> None:
     args = parse_args()
     script_dir = os.path.dirname(os.path.abspath(__file__))
     seeds = _parse_seed_list(args.seeds)
-    dataset_json = _ensure_dataset(args.dataset_json, args.target_count, script_dir)
+    dataset_json = resolve_dataset_path(args.dataset_json, script_dir, DEFAULT_DATASET_JSON)
+    dataset_json = _ensure_dataset(dataset_json, args.target_count, script_dir)
 
     dataset = TaskDataset.load_from_json(dataset_json)
 
@@ -259,9 +265,7 @@ def main() -> None:
 
     report_data, report_md = build_report(per_seed, seeds, args.rounds, dataset_json)
 
-    output_dir = args.output_dir
-    if not os.path.isabs(output_dir):
-        output_dir = os.path.join(script_dir, output_dir)
+    output_dir = resolve_output_dir(args.output_dir, script_dir, DEFAULT_OUTPUT_DIR)
     os.makedirs(output_dir, exist_ok=True)
 
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")

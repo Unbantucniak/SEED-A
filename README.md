@@ -163,6 +163,42 @@ Output path notes:
 - For `run_g3_ablation.py`, default paths remain script-relative for backward compatibility.
 - If you pass custom relative paths (for example `--output-dir experiments/results` from repo root), they are resolved against the current working directory.
 
+### 9) Recommended Step-by-Step Workflow
+
+Use this order for stable reproducible validation:
+
+1) Core checks
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+2) G1 quick regression
+
+```bash
+py experiments/run_g1_experiment.py --rounds 1 --seed 11 --target-count 120 --output-dir experiments/results
+```
+
+3) G2 quick regression
+
+```bash
+py experiments/run_g2_analysis.py --seeds 11 --rounds 1 --output-dir experiments/results
+```
+
+4) G3 quick regression
+
+```bash
+py experiments/run_g3_ablation.py --seeds 11 --rounds 1 --scenarios full --output-dir experiments/results
+```
+
+5) Inspect process and result logs
+
+```bash
+Get-Content experiments/results/experiment_run_log.md -Tail 160
+```
+
+This gives a complete trace: parameters, outputs, and key metric pointers for each run.
+
 ## Configuration
 
 SEED-A uses `config.toml` as the single configuration entry.

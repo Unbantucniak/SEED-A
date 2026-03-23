@@ -9,7 +9,12 @@ import subprocess
 import sys
 
 from build_g1_dataset import build_dataset
+from path_resolver import resolve_dataset_path, resolve_output_dir
 from run_logger import append_run_log
+
+
+DEFAULT_DATASET_JSON = "./benchmarks/g1_full_120_tasks.json"
+DEFAULT_OUTPUT_DIR = "../results"
 
 
 def parse_args() -> argparse.Namespace:
@@ -20,10 +25,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--dataset-json",
         type=str,
-        default="./benchmarks/g1_full_120_tasks.json",
+        default=DEFAULT_DATASET_JSON,
         help="G1 dataset JSON path",
     )
-    parser.add_argument("--output-dir", type=str, default="../results", help="Output directory")
+    parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR, help="Output directory")
     parser.add_argument(
         "--expanded-json",
         type=str,
@@ -40,22 +45,16 @@ def main() -> None:
     args = parse_args()
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    dataset_json = args.dataset_json
-    if not os.path.isabs(dataset_json):
-        dataset_json = os.path.join(script_dir, dataset_json)
+    dataset_json = resolve_dataset_path(args.dataset_json, script_dir, DEFAULT_DATASET_JSON)
 
     if args.rebuild_dataset or not os.path.exists(dataset_json):
         expanded_json = ""
         if args.expanded_json:
-            expanded_json = args.expanded_json
-            if not os.path.isabs(expanded_json):
-                expanded_json = os.path.join(script_dir, expanded_json)
+            expanded_json = resolve_dataset_path(args.expanded_json, script_dir, args.expanded_json)
         built_count = build_dataset(dataset_json, args.target_count, expanded_json)
         print(f"[G1] dataset ready: {dataset_json} ({built_count} tasks)")
 
-    output_dir = args.output_dir
-    if not os.path.isabs(output_dir):
-        output_dir = os.path.join(script_dir, output_dir)
+    output_dir = resolve_output_dir(args.output_dir, script_dir, DEFAULT_OUTPUT_DIR)
 
     run_experiment_py = os.path.join(script_dir, "run_experiment.py")
     cmd = [

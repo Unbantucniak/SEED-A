@@ -16,6 +16,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from benchmarks.task_dataset import TaskDataset
 from baselines.impl_baselines import Ours_ProposedScheme
 from experiment_runner import ExperimentRunner
+from path_resolver import resolve_dataset_path, resolve_output_dir
 from run_logger import append_run_log
 
 
@@ -97,29 +98,6 @@ def summarize(values: List[float]) -> Dict[str, float]:
     return {"mean": mean(values), "std": stdev(values)}
 
 
-def resolve_dataset_path(dataset_arg: str, script_dir: str) -> str:
-    if os.path.isabs(dataset_arg):
-        return dataset_arg
-
-    if dataset_arg == DEFAULT_DATASET_JSON:
-        return os.path.abspath(os.path.join(script_dir, dataset_arg))
-
-    cwd_candidate = os.path.abspath(dataset_arg)
-    if os.path.exists(cwd_candidate):
-        return cwd_candidate
-    return os.path.abspath(os.path.join(script_dir, dataset_arg))
-
-
-def resolve_output_dir(output_arg: str, script_dir: str) -> str:
-    if os.path.isabs(output_arg):
-        return output_arg
-
-    if output_arg == DEFAULT_OUTPUT_DIR:
-        return os.path.abspath(os.path.join(script_dir, output_arg))
-
-    return os.path.abspath(output_arg)
-
-
 def run_single(
     dataset: TaskDataset,
     seed: int,
@@ -178,8 +156,8 @@ def main() -> None:
         raise ValueError("rounds must be greater than 0")
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    dataset_json = resolve_dataset_path(args.dataset_json, script_dir)
-    output_dir = resolve_output_dir(args.output_dir, script_dir)
+    dataset_json = resolve_dataset_path(args.dataset_json, script_dir, DEFAULT_DATASET_JSON)
+    output_dir = resolve_output_dir(args.output_dir, script_dir, DEFAULT_OUTPUT_DIR)
 
     seeds = parse_seed_list(args.seeds)
     scenarios = parse_scenarios(args.scenarios)
