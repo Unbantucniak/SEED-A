@@ -4,7 +4,7 @@ IDE插件后端服务
 对接核心经验管理模块，提供REST API接口
 """
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import sys
 import os
@@ -24,7 +24,7 @@ experience_manager = ExperienceManager()
 
 class SearchRequest(BaseModel):
     query: str
-    top_k: int = 5
+    top_k: int = Field(default=5, ge=1, le=50)
 
 class AddExperienceRequest(BaseModel):
     original_requirement: str
@@ -42,7 +42,7 @@ class RecommendRequest(BaseModel):
     query: Optional[str] = None
     current_code: Optional[str] = None
     language: Optional[str] = None
-    top_k: int = 5
+    top_k: int = Field(default=5, ge=1, le=50)
 
 @app.get("/api/health")
 async def health_check():
@@ -127,6 +127,8 @@ async def add_experience(request: AddExperienceRequest):
         if not exp_id:
             raise HTTPException(status_code=400, detail="经验质量不足，未入库")
         return {"experience_id": exp_id, "status": "success"}
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"添加经验失败: {str(e)}")
 

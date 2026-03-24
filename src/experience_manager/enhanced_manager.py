@@ -10,6 +10,10 @@ from enum import Enum
 import json
 import hashlib
 import re
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class QualityDimension(Enum):
@@ -100,7 +104,7 @@ class LLMasJudge:
                 if result:
                     return result
             except Exception as e:
-                print(f"⚠ LLM评估失败: {e}，使用规则回退")
+                logger.warning("LLM评估失败: %s，使用规则回退", e)
         
         # 回退：基于规则的评估
         return self._rule_based_evaluation(experience_data)
@@ -125,7 +129,7 @@ class LLMasJudge:
                     "source": "llm"
                 }
         except Exception as e:
-            print(f"⚠ JSON解析失败: {e}")
+            logger.warning("JSON解析失败: %s", e)
         return None
     
     def _rule_based_evaluation(self, experience_data: Dict) -> Dict[str, Any]:
@@ -179,6 +183,7 @@ class AdversarialValidator:
             self._check_semantic_contradiction,
             self._check_duplicate_similarity,
             self._check_temporal_consistency,
+            self._check_counterfactual_robustness,
             self._check_output_safety
         ]
     
@@ -288,6 +293,29 @@ class AdversarialValidator:
         
         return {"passed": True, "type": "output_safety"}
 
+    def _check_counterfactual_robustness(self, exp: Dict,
+                                         existing: List[Dict]) -> Dict:
+        """反事实健壮性检查（轻量规则版）。"""
+        task_intent = exp.get("task_intent", {})
+        requirement = f"{task_intent.get('original_requirement', '')} {task_intent.get('user_instruction', '')}".lower()
+        output = exp.get("execution_result", {}).get("final_output", "").lower()
+
+        checks = []
+        if "sort" in requirement or "排序" in requirement:
+            checks.append(any(token in output for token in ["sort", "排序", "quick", "merge", "tim", "heap"]))
+        if "json" in requirement or "结构化" in requirement:
+            checks.append(any(token in output for token in ["{", "}", "json"]))
+        if "异常" in requirement or "error" in requirement:
+            checks.append(any(token in output for token in ["try", "except", "error", "异常"]))
+
+        if checks and not all(checks):
+            return {
+                "passed": False,
+                "type": "counterfactual_robustness",
+                "message": "输出在关键需求扰动下可能不稳健"
+            }
+        return {"passed": True, "type": "counterfactual_robustness"}
+
 
 class RedisCacheManager:
     """Redis缓存管理器（可选分布式支持）"""
@@ -315,11 +343,11 @@ class RedisCacheManager:
             self.client = redis.from_url(self.redis_url, decode_responses=True)
             self.client.ping()
             self._use_memory_fallback = False
-            print("✓ Redis连接成功")
+            logger.info("Redis连接成功")
         except ImportError:
-            print("⚠ redis-py 未安装，使用内存缓存")
+            logger.warning("redis-py 未安装，使用内存缓存")
         except Exception as e:
-            print(f"⚠ Redis连接失败: {e}，使用内存缓存")
+            logger.warning("Redis连接失败: %s，使用内存缓存", e)
     
     def _get_key(self, prefix: str, identifier: str) -> str:
         """生成缓存键"""
@@ -420,6 +448,24 @@ class EnhancedExperienceManager:
             "min_confidence": 0.7,
             "cache_ttl": 300
         }
+
+    def _to_evaluation_payload(self, raw_data: Dict[str, Any], experience) -> Dict[str, Any]:
+        """将原始数据与ExperienceUnit对齐为统一评估结构。"""
+        payload = experience.model_dump()
+
+        # 补充上游原始字段，便于后续规则和LLM评估读取
+        payload.setdefault("task_intent", {})
+        payload["task_intent"].setdefault("original_requirement", raw_data.get("original_requirement", ""))
+        payload["task_intent"].setdefault("user_instruction", raw_data.get("user_instruction", ""))
+        payload["task_intent"].setdefault("task_type", raw_data.get("task_type", "unknown"))
+
+        payload.setdefault("execution_result", {})
+        payload["execution_result"].setdefault("final_output", raw_data.get("final_output", ""))
+        payload["execution_result"].setdefault("is_success", raw_data.get("is_success", False))
+        payload["execution_result"].setdefault("error_info", raw_data.get("error_info"))
+        payload["execution_result"].setdefault("execution_time", raw_data.get("execution_time", 1.0))
+
+        return payload
     
     def add_experience_with_validation(self, raw_data: Dict[str, Any],
                                          auto_verify: bool = True) -> Optional[str]:
@@ -438,17 +484,19 @@ class EnhancedExperienceManager:
         if not experience:
             return None
 
+        evaluation_payload = self._to_evaluation_payload(raw_data, experience)
+
         quality_result = None
         validation_result = None
         
         # 质量评估（LLM-as-Judge）
         if self.llm_judge:
-            quality_result = self.llm_judge.evaluate(raw_data)
+            quality_result = self.llm_judge.evaluate(evaluation_payload)
             raw_data["llm_quality_score"] = quality_result.get("overall_score", 0.5)
             
             # 检查是否低于阈值
             if quality_result.get("overall_score", 0) < self.base_manager.config["min_quality_score"]:
-                print(f"⚠ LLM评估质量分过低: {quality_result.get('overall_score'):.2f}")
+                logger.warning("LLM评估质量分过低: %.2f", quality_result.get("overall_score", 0.0))
         
         # 对抗性验证
         if self.config["enable_adversarial_validation"]:
@@ -457,9 +505,9 @@ class EnhancedExperienceManager:
                 for exp in self.base_manager.graph_ops.graph.experience_nodes.values()
             ]
             
-            validation_result = self.validator.validate(raw_data, existing_data)
+            validation_result = self.validator.validate(evaluation_payload, existing_data)
             if not validation_result["passed"]:
-                print(f"⚠ 对抗性验证失败: {validation_result['issues']}")
+                logger.warning("对抗性验证失败: %s", validation_result["issues"])
                 if validation_result["confidence"] < self.config["min_confidence"]:
                     return None
         
@@ -480,7 +528,7 @@ class EnhancedExperienceManager:
         if self.cache:
             cached = self.cache.get_cached_search(query)
             if cached:
-                print("✓ 使用缓存的搜索结果")
+                logger.info("使用缓存的搜索结果")
                 return cached
         
         # 执行搜索
@@ -496,4 +544,4 @@ class EnhancedExperienceManager:
         """清除缓存"""
         if self.cache:
             self.cache.clear_pattern("experience")
-            print("✓ 缓存已清除")
+            logger.info("缓存已清除")

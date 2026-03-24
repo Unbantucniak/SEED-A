@@ -49,8 +49,21 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--target-count", type=int, default=120, help="Build dataset size if missing")
     parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR, help="Output directory")
+    parser.add_argument("--target-success-ci", type=float, default=0.0, help="Adaptive stop when ours success_rate CI half-width <= target (>0 to enable)")
+    parser.add_argument("--max-seeds", type=int, default=0, help="Maximum seeds to run in adaptive mode (0 means no limit)")
     parser.add_argument("--log-level", type=str, default="WARNING", help="Reserved for compatibility")
     return parser.parse_args()
+
+
+def _validate_args(args: argparse.Namespace) -> None:
+    if args.rounds <= 0:
+        raise ValueError("rounds must be greater than 0")
+    if args.target_count <= 0:
+        raise ValueError("target_count must be greater than 0")
+    if args.target_success_ci < 0:
+        raise ValueError("target_success_ci must be >= 0")
+    if args.max_seeds < 0:
+        raise ValueError("max_seeds must be >= 0")
 
 
 def _parse_seed_list(seed_text: str) -> List[int]:
@@ -147,6 +160,12 @@ def summarize(values: List[float]) -> Dict[str, float]:
     if len(values) == 1:
         return {"mean": values[0], "std": 0.0}
     return {"mean": mean(values), "std": stdev(values)}
+
+
+def ci_half_width(values: List[float], z: float = 1.96) -> float:
+    if len(values) <= 1:
+        return float("inf")
+    return z * stdev(values) / math.sqrt(len(values))
 
 
 def run_single_seed(dataset: TaskDataset, seed: int, rounds: int) -> Dict[str, Dict[str, float]]:
@@ -252,6 +271,7 @@ def build_report(
 
 def main() -> None:
     args = parse_args()
+    _validate_args(args)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     seeds = _parse_seed_list(args.seeds)
     dataset_json = resolve_dataset_path(args.dataset_json, script_dir, DEFAULT_DATASET_JSON)
@@ -260,10 +280,24 @@ def main() -> None:
     dataset = TaskDataset.load_from_json(dataset_json)
 
     per_seed: Dict[int, Dict[str, Dict[str, float]]] = {}
+    processed_seeds: List[int] = []
     for seed in seeds:
-        per_seed[seed] = run_single_seed(dataset, seed, args.rounds)
+        if args.max_seeds and len(processed_seeds) >= args.max_seeds:
+            break
 
-    report_data, report_md = build_report(per_seed, seeds, args.rounds, dataset_json)
+        per_seed[seed] = run_single_seed(dataset, seed, args.rounds)
+        processed_seeds.append(seed)
+
+        if args.target_success_ci > 0:
+            ours_values = [float(per_seed[s]["ours_proposed_scheme"]["success_rate"]) for s in processed_seeds]
+            width = ci_half_width(ours_values)
+            if width <= args.target_success_ci:
+                break
+
+    report_data, report_md = build_report(per_seed, processed_seeds, args.rounds, dataset_json)
+    report_data["meta"]["target_success_ci"] = args.target_success_ci
+    report_data["meta"]["max_seeds"] = args.max_seeds
+    report_data["meta"]["processed_seeds"] = processed_seeds
 
     output_dir = resolve_output_dir(args.output_dir, script_dir, DEFAULT_OUTPUT_DIR)
     os.makedirs(output_dir, exist_ok=True)
@@ -282,10 +316,12 @@ def main() -> None:
         title="g2_multi_seed_stats",
         params={
             "rounds": args.rounds,
-            "seeds": seeds,
+            "seeds": processed_seeds,
             "dataset_json": dataset_json,
             "target_count": args.target_count,
             "output_dir": output_dir,
+            "target_success_ci": args.target_success_ci,
+            "max_seeds": args.max_seeds,
         },
         outputs={
             "stats_json": json_path,

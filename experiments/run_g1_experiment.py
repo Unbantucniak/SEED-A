@@ -41,8 +41,16 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _validate_args(args: argparse.Namespace) -> None:
+    if args.rounds <= 0:
+        raise ValueError("rounds must be greater than 0")
+    if args.target_count <= 0:
+        raise ValueError("target_count must be greater than 0")
+
+
 def main() -> None:
     args = parse_args()
+    _validate_args(args)
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     dataset_json = resolve_dataset_path(args.dataset_json, script_dir, DEFAULT_DATASET_JSON)

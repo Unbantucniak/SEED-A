@@ -1,0 +1,18 @@
+# Reproducible dependency lock (top-level direct dependencies)
+# Generated/updated on 2026-03-24
+# Notes:
+# - For packages missing in local env, pin to the project's minimum compatible version.
+# - Use docs/5-依赖锁定与升级流程.md for update workflow.
+
+pydantic==2.12.5
+numpy==2.3.3
+scikit-learn==1.7.2
+tqdm==4.67.1
+pandas==2.3.2
+matplotlib==3.10.6
+sentence-transformers==2.2.0
+pytest==8.0.0
+pypdf==6.9.1
+fastapi==0.100.0
+uvicorn==0.23.0
+redis==4.5.0

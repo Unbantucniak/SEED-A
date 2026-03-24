@@ -10,6 +10,10 @@ import ast
 import numpy as np
 import json
 import os
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class ModalityType(Enum):
@@ -151,7 +155,8 @@ class ReinforcementLearningOptimizer:
         return self.q_table[state_key]
     
     def select_action(self, state_features: Dict[str, Any], 
-                      exploit_only: bool = False) -> int:
+                      exploit_only: bool = False,
+                      prior_bias: Optional[np.ndarray] = None) -> int:
         """
         选择动作（策略）
         
@@ -164,6 +169,8 @@ class ReinforcementLearningOptimizer:
         """
         state_key = self._get_state_key(state_features)
         q_values = self._get_q_values(state_key)
+        if prior_bias is not None and prior_bias.shape[0] == self.action_dim:
+            q_values = q_values + prior_bias
         
         # ε-greedy 策略
         if not exploit_only and np.random.random() < self.epsilon:
@@ -373,6 +380,53 @@ class EnhancedRoutingEngine:
                 "supported_strategies": ["RAG_RETRIEVAL", "PROMPT_ENGINEERING"]
             }
         }
+
+        # 策略先验（可由G3消融自动生成）
+        self.strategy_priors: Dict[str, float] = {}
+
+    def load_priors_from_ablation(self, ablation_json_path: str) -> bool:
+        """从G3消融结果提取策略贡献先验。"""
+        if not os.path.exists(ablation_json_path):
+            logger.warning("Ablation file not found: %s", ablation_json_path)
+            return False
+
+        try:
+            with open(ablation_json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except (OSError, json.JSONDecodeError) as exc:
+            logger.warning("Failed to load ablation json: %s", exc)
+            return False
+
+        metrics = data.get("metrics", {})
+        full = metrics.get("full", {})
+        if not full:
+            logger.warning("Ablation metrics missing 'full' scenario")
+            return False
+
+        full_success = float(np.mean([float(v.get("success_rate", 0.0)) for v in full.values()]))
+        scenario_map = {
+            "no_rag": "rag_retrieval",
+            "no_template": "template_reuse",
+            "no_prompt": "prompt_engineering",
+            "no_finetune": "fine_tuning",
+        }
+
+        contributions: Dict[str, float] = {}
+        for scenario, strategy in scenario_map.items():
+            scenario_metrics = metrics.get(scenario, {})
+            if not scenario_metrics:
+                continue
+            scenario_success = float(np.mean([float(v.get("success_rate", 0.0)) for v in scenario_metrics.values()]))
+            contributions[strategy] = max(0.0, full_success - scenario_success)
+
+        total = sum(contributions.values())
+        if total <= 0:
+            logger.warning("Unable to derive positive prior contributions from ablation")
+            return False
+
+        self.strategy_priors = {k: v / total for k, v in contributions.items()}
+        logger.info("Loaded strategy priors from ablation: %s", self.strategy_priors)
+        return True
     
     def route(self, task_info: Dict[str, Any],
               system_status: Optional[Dict[str, Any]] = None,
@@ -394,7 +448,13 @@ class EnhancedRoutingEngine:
         
         if use_rl and self.rl_optimizer:
             # 使用强化学习选择策略
-            action_idx = self.rl_optimizer.select_action(features)
+            prior_bias = None
+            if self.strategy_priors:
+                prior_bias = np.array(
+                    [self.strategy_priors.get(s.value.lower(), 0.0) for s in self.strategy_types],
+                    dtype=float,
+                )
+            action_idx = self.rl_optimizer.select_action(features, prior_bias=prior_bias)
             strategy = self.strategy_types[action_idx]
         else:
             # 使用基础引擎
