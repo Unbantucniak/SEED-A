@@ -1,15 +1,22 @@
 {
-  "name": "self-evolution-agent",
-  "displayName": "自学习自演化智能体助手",
-  "description": "基于经验积累的智能开发助手，支持经验自动积累、复用与演化",
-  "version": "0.0.1",
+  "name": "seeda-experience-assistant",
+  "displayName": "SEED-A 经验助手",
+  "description": "面向软件开发智能体的可审计经验积累、检索、推荐与生命周期管理原型",
+  "version": "0.3.2",
+  "publisher": "sysu-seeda",
+  "license": "MIT",
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.85.0"
   },
   "categories": [
-    "Other",
     "Machine Learning",
-    "Programming Languages"
+    "Other"
+  ],
+  "keywords": [
+    "agent",
+    "experience",
+    "retrieval",
+    "software-engineering"
   ],
   "activationEvents": [
     "onStartupFinished"
@@ -18,81 +25,206 @@
   "contributes": {
     "commands": [
       {
-        "command": "self-evolution-agent.searchExperience",
-        "title": "智能助手：搜索相关开发经验"
+        "command": "seeda.searchExperience",
+        "title": "SEED-A：搜索开发经验"
       },
       {
-        "command": "self-evolution-agent.saveCurrentExperience",
-        "title": "智能助手：保存当前交互为经验"
+        "command": "seeda.saveCurrentExperience",
+        "title": "SEED-A：保存当前代码为工作台草稿"
       },
       {
-        "command": "self-evolution-agent.recommendExperience",
-        "title": "智能助手：基于当前上下文推荐经验"
+        "command": "seeda.recommendExperience",
+        "title": "SEED-A：基于编辑器上下文推荐经验"
       },
       {
-        "command": "self-evolution-agent.showExperienceLibrary",
-        "title": "智能助手：打开经验库面板"
+        "command": "seeda.refreshLibrary",
+        "title": "SEED-A：刷新经验库"
+      },
+      {
+        "command": "seeda.runLifecycle",
+        "title": "SEED-A：运行经验生命周期维护"
+      },
+      {
+        "command": "seeda.configureApiKey",
+        "title": "SEED-A：配置后端 API Key"
+      },
+      {
+        "command": "seeda.checkConnection",
+        "title": "SEED-A：检查后端连接"
+      },
+      {
+        "command": "seeda.openWorkbench",
+        "title": "SEED-A: 打开研发工作台"
+      },
+      {
+        "command": "seeda.sendSelectionToWorkbench",
+        "title": "SEED-A: 将选中代码发送到工作台"
+      },
+      {
+        "command": "seeda.feedbackExperience",
+        "title": "SEED-A：记录经验复用反馈"
+      },
+      {
+        "command": "seeda.startWorkbench",
+        "title": "SEED-A：启动或连接本地服务"
+      },
+      {
+        "command": "seeda.verifySelection",
+        "title": "SEED-A：用项目 pytest 验证并保存经验"
+      },
+      {
+        "command": "seeda.applyExperience",
+        "title": "SEED-A：预览项目经验差异"
+      },
+      {
+        "command": "seeda.browseProjectExperiences",
+        "title": "SEED-A：浏览本项目此版本的已验证经验"
+      },
+      {
+        "command": "seeda.acceptExperience",
+        "title": "SEED-A：采纳预览并保存"
+      },
+      {
+        "command": "seeda.undoExperience",
+        "title": "SEED-A：撤销上一次采纳"
+      },
+      {
+        "command": "seeda.retryProjectReceipts",
+        "title": "SEED-A：重传项目测试收据"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "self-evolution-agent",
-          "title": "智能开发助手",
+          "id": "seeda",
+          "title": "SEED-A",
           "icon": "media/icon.svg"
         }
       ]
     },
     "views": {
-      "self-evolution-agent": [
+      "seeda": [
         {
           "type": "webview",
-          "id": "self-evolution-agent.experienceView",
+          "id": "seeda.experienceView",
           "name": "经验库"
         }
       ]
     },
+    "menus": {
+      "view/title": [
+        {
+          "command": "seeda.openWorkbench",
+          "when": "view == seeda.experienceView",
+          "group": "navigation@0"
+        },
+        {
+          "command": "seeda.refreshLibrary",
+          "when": "view == seeda.experienceView",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "seeda.verifySelection",
+          "when": "resourceLangId == python && editorTextFocus",
+          "group": "seeda@0"
+        },
+        {
+          "command": "seeda.applyExperience",
+          "when": "resourceLangId == python && editorTextFocus",
+          "group": "seeda@1"
+        },
+        {
+          "command": "seeda.sendSelectionToWorkbench",
+          "group": "seeda@0"
+        },
+        {
+          "command": "seeda.saveCurrentExperience",
+          "when": "editorHasSelection",
+          "group": "seeda@1"
+        },
+        {
+          "command": "seeda.recommendExperience",
+          "group": "seeda@2"
+        }
+      ]
+    },
     "configuration": {
-      "title": "自学习自演化智能助手",
+      "title": "SEED-A 经验助手",
       "properties": {
-        "self-evolution-agent.apiEndpoint": {
+        "seeda.apiEndpoint": {
           "type": "string",
-          "default": "http://localhost:8000",
-          "description": "后端服务接口地址"
+          "default": "http://127.0.0.1:8765",
+          "description": "SEED-A 后端服务地址",
+          "deprecationMessage": "请使用 seeda.workbenchUrl；所有命令统一连接该本机工作台，避免分离的经验库。"
         },
-        "self-evolution-agent.autoSaveExperience": {
-          "type": "boolean",
-          "default": true,
-          "description": "是否自动保存成功的交互为经验"
-        },
-        "self-evolution-agent.suggestionCount": {
+        "seeda.suggestionCount": {
           "type": "number",
           "default": 5,
           "minimum": 1,
           "maximum": 20,
-          "description": "实时经验推荐数量"
+          "description": "每次返回的经验推荐条数"
+        },
+        "seeda.requestTimeoutMs": {
+          "type": "number",
+          "default": 10000,
+          "minimum": 1000,
+          "maximum": 120000,
+          "description": "后端请求超时时间（毫秒）"
+        },
+        "seeda.workbenchUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:8765",
+          "description": "本机研发工作台及共享经验服务根地址，仅支持loopback；代码以草稿保存，由用户补充任务与测试后运行。",
+          "scope": "window"
+        },
+        "seeda.memoryScope": {
+          "type": "string",
+          "default": "",
+          "description": "留空自动按工作区文件夹隔离；多个克隆可显式指定同一作用域。",
+          "scope": "resource",
+          "maxLength": 80
+        },
+        "seeda.memoryVersion": {
+          "type": "string",
+          "default": "",
+          "description": "留空读取本地 Git 分支或分离提交；非 Git 项目使用 v1。",
+          "scope": "resource",
+          "maxLength": 40
+        },
+        "seeda.pythonPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "当前工作区选用的 Python 解释器。留空时依次使用 .venv、配套服务解释器、系统 python。"
+        },
+        "seeda.serviceRoot": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "已解压的本地配套服务目录，内含 run_service.py 与 runtime/python.exe。"
         }
       }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "clean": "rimraf out dist",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.80.0",
-    "@types/node": "16.x",
-    "typescript": "^5.1.3",
-    "eslint": "^8.41.0",
-    "@typescript-eslint/eslint-plugin": "^5.59.8",
-    "@typescript-eslint/parser": "^5.59.8",
-    "@vscode/test-electron": "^2.3.2"
+    "check": "tsc -p ./ --noEmit",
+    "package": "npm run compile && node -e \"require('fs').mkdirSync('dist',{recursive:true})\" && vsce package --allow-missing-repository --out dist/seeda-experience-assistant-0.3.2.vsix",
+    "vscode:prepublish": "npm run compile",
+    "test:workbench": "npm run compile && node tests/workbench_smoke.cjs && node tests/accepted_range.cjs && node tests/empty_search_browse.cjs"
   },
   "dependencies": {
-    "axios": "^1.4.0"
+    "axios": "^1.7.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
   }
 }

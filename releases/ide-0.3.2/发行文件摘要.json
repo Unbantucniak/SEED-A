@@ -1,0 +1,29 @@
+{
+  "version": "0.3.2",
+  "source_archive_sha256": "0790ae24a5a5c302cc69128e6b696a1f649297a52f3094eae780f1c1615a87f5",
+  "files": {
+    "library.html": "2143dc27c0f5ad19ec092ce1ed3e42c98eff94ee51d3e8b9fcf318d2d7d9e1fd",
+    "run_service.py": "c5904df3abd56c7d5838d8a2a4271cc1c1e03b9a178efb1142995c38503b1b12",
+    "seeda-experience-assistant-0.3.2.vsix": "2ea6618fe1a54c9d4c06a608fefd73c9cdf6734bee894cf5de24d4ad727e7e2f",
+    "service/experiments/humaneval_admission_worker.py": "d8a41241f51236be97288036498cbbe7fa7ecc2f836263d549423ee8f047eb30",
+    "service/src/common/config.py": "4ad7c9466eba02f4376c744422407d78479423161d2bd455c7f6dd008aa495b0",
+    "service/src/experience_graph/model.py": "b60ce8ef9fae1cd00598d666b29d79afaa740b91438e9856a8179af9cb74916a",
+    "service/src/experience_graph/operations.py": "37cbcb41acfc9ae9e87835d66064425445bee652d2fb99db2032649a9f9f9c9a",
+    "service/src/experience_manager/lifecycle_policy.py": "abb2695713051c0640ea190873615d1c48228277e38b3e364e823e65dec6f541",
+    "service/src/experience_manager/manager.py": "9466ea77eec078684ce50310c7b6b41884852cfd489991ccb53898128c31722a",
+    "service/src/experience_manager/parameterized_template.py": "ce3519010c8c0bf3cf2fabdd8214958b1d5d28093892d36ed5283f4bcc5eb434",
+    "service/src/runtime/verified_episode_memory.py": "2b7e93af4b93da4aa7943e89d6919da3c87fc93f4764b9a11831f43bce03b156",
+    "service/src/workbench/experience_search.py": "852e62ae2672000fdfdf90a07584b695020803fd08a8fb48c58548907e54b692",
+    "service/src/workbench/ide_receipts.py": "b477f3b8c15492de7a0df80e934fac8174d7e034ae8aec95a1ebb1f59f23f43c",
+    "service/src/workbench/learning.py": "89356b0e3a36132df4260b03e02580fcc6c7cceca61cc983839a4eda58a3291e",
+    "service/src/workbench/presentation.py": "f7d4e7b9b2ba0318bfb01e73f49b23cc9c17016aacb7f93a2cf6f4ec31607224",
+    "service/src/workbench/router.py": "b9b5fc392071eea872b878a05eed07951e9e7887eaf7b2dd3e46ad6b82d0274c",
+    "service/src/workbench/semantic_search.py": "ebbe7dc052c752274ac31fd83f95db7377be21ae0c383839540b3a56a01f5a85",
+    "service/src/workbench/service.py": "4a887b96d79847855b1740e369ad5817d00b48ee27287b4e4ab5947b74a4b94c",
+    "service/src/workbench/tasks.py": "52779cf6b3a97fa831038ea05a4d535468ccc43f6d5d8a7c9d5bad61eb4ebfd7",
+    "示例项目/labels.py": "6fd41b18cb08e5fe0032a6042d698b8f899ae915d9893e4ae92f5762d3404105",
+    "示例项目/test_labels.py": "a0a129b88df97817490928b601d6867433f96c7546564a30861f6a6e087b2353",
+    "示例项目/练习/check_reuse.py": "f28f70b4126ede64544a4142ea50f51cb8850db8cfd3f41bca308566c077828c",
+    "示例项目/练习/reuse_target.py": "52fef112efdcb391fea75a97bc2c91169dd07b80c68644779b174c1e4064f340"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "description": "Hand-authored teaching example for case-converter 1.2.0. The two drafts are illustrative, and neither is a recorded API response.",
+  "target": {
+    "task": {"project": "case-converter", "version": "1.2.0", "style": "constant"},
+    "spec": [["example name", "EXAMPLE_NAME"]],
+    "history": [],
+    "probes": [
+      ["new item", {"rule": "NEW_ITEM", "draft": "NEW_ITEM", "patch": "NEW_ITEM", "patched_rule": "NEW_ITEM"}, "NEW_ITEM"]
+    ],
+    "past": [
+      ["example-acronym", "constant", "readXMLHeader", {"rule": "READ_XML_HEADER", "draft": "READ_X_M_L_HEADER", "patch": "READ_X_M_L_HEADER", "patched_rule": "READ_XML_HEADER"}, "READ_X_M_L_HEADER"],
+      ["example-digits", "constant", "x64Bit", {"rule": "X64BIT", "draft": "X_64_BIT", "patch": "X_64_BIT", "patched_rule": "X64BIT"}, "X64BIT"]
+    ]
+  },
+  "router_receipt_removed": "example-acronym",
+  "model_cases": [["openURLFile", "OPEN_U_R_L_FILE"], ["redMeter90Track", "RED_METER_90_TRACK"]]
+}

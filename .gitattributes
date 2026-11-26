@@ -1,0 +1,4 @@
+# Keep the checked release bytes identical across checkout platforms.
+/releases/ide-0.3.2/** -text
+*.vsix binary
+*.pdf binary

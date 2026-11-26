@@ -1,241 +1,32 @@
-﻿# SEED-A
+# SEED-A · 自学习自演化智能体的经验积累与演化方法研究
 
-Self-Evolving Experience-Driven Agents
+SEED-A 把一次研发经历保存为带有项目、版本、适用条件和测试结果的经验。下一次遇到相似任务时，系统可以采用旧经验、局部修订它，也可以跳过它。项目研究这些选择何时有帮助，覆盖功能开发、测试设计等研发活动。
 
-SEED-A is a research-oriented engineering project for building long-running software agents that can accumulate, evaluate, route, and evolve experience over time.
+## 安装、演示与复算
 
-## Overview
+| 想看什么 | 从这里开始 |
+| --- | --- |
+| 在自己的 Python 项目里试用 | [下载 0.3.2 插件与服务包](https://github.com/Unbantucniak/SEED-A/releases/tag/v0.3.2) · [安装及使用说明](releases/ide-0.3.2/README.md) |
+| 看一次失败怎样改变下一次决策 | [经验反馈工具与演示](research/feedback/README.md) |
+| 核查实验做了几项、通过几项 | [逐项评分表与复算说明](experiments/closeout/README.md) |
+| 查阅经验结构、跨工件表示、图关系补全及负结果 | [结题技术报告公开版 · PDF，8 页](docs/technical-report-2026-11.pdf) |
+| 查看代码、测试、编辑器画面怎样连成一条开发记录 | [独立数据集 · 固定版本，22 个文件](https://github.com/Unbantucniak/SEED-A-Experience-Dataset/tree/b5ed2e0fcbfecf83ca94aec5aa42237c0ddd0eb0) |
 
-Modern LLM-based software agents often suffer from:
-- forgetting previously successful solutions,
-- low experience reuse efficiency,
-- stale or conflicting knowledge in long-running tasks.
+下载或克隆仓库后，在根目录用 Python 3.9 或以上版本运行以下命令，即可根据公开评分表复算各组成绩。该步骤离线运行，无需模型或 API 密钥。
 
-SEED-A addresses these issues with a complete experience lifecycle:
-1. experience representation and graph construction,
-2. experience ingestion, scoring, routing, and evolution,
-3. prototype integration and benchmark-driven evaluation.
-
-## Core Capabilities
-
-- Experience Unit schema for task intent, context state, operation sequence, constraints, and execution result.
-- Experience Graph with typed edges and searchable metadata.
-- Dynamic metadata updates (success rate, timeliness, usage, conflict score).
-- Strategy routing across:
-  - RAG retrieval,
-  - template reuse,
-  - prompt engineering,
-  - fine-tuning path.
-- Enhanced modules for:
-  - LLM-as-Judge quality scoring,
-  - adversarial validation,
-  - online reinforcement-style routing optimization.
-- Experiment framework with baselines and automated reporting.
-
-## Repository Structure
-
-```text
-.
-├── src/
-│   ├── common/                 # shared config loader
-│   ├── experience_graph/       # graph model and operations
-│   ├── experience_manager/     # lifecycle management
-│   ├── routing_engine/         # strategy routing and optimization
-│   ├── monitoring/             # health, logging, metrics
-│   └── prototype/              # VS Code prototype (backend + extension)
-├── experiments/
-│   ├── baselines/              # baseline implementations
-│   ├── benchmarks/             # task datasets
-│   ├── run_experiment.py       # experiment entry
-│   ├── experiment_runner.py    # runner and report generator
-│   └── experiment_params.template.toml
-├── tests/
-├── tools/
-├── config.toml
-├── requirements.txt
-└── demo.py
+```sh
+python experiments/closeout/recount.py
 ```
 
-## Quick Start
+## 经验在哪些任务上有帮助
 
-### 1) Install dependencies
+在六个留出的开源命名库里，每个接口分别考查功能移植和测试设计。四组使用相同模型和生成上限。后三组共享同一份检索草稿，固定选择与反馈选择也能看到相同候选规则。两者的差别是，公开校准样例无法区分候选时，反馈选择会参考过去实际运行的分歧。
 
-```bash
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# Linux/macOS
-# source venv/bin/activate
+| 完成交付的任务数 | 无经验 | 同版本 RAG | 固定选择 | 反馈选择 |
+| --- | ---: | ---: | ---: | ---: |
+| 测试设计，28 项 | 13 | 17 | 23 | **25** |
+| 功能移植，28 项 | 3 | 5 | 6 | **6** |
 
-pip install -r requirements.txt
-```
+反馈多完成的两份测试都来自 `case-converter`。其中一次，旧回执改变了系统对缩写的处理，生成的期望值从 `ATOLL_XYZ_WIDGET` 变为原库实际返回的 `ATOLL_X_Y_Z_WIDGET`。在其他候选和模型草稿相同的条件下撤回该回执，这份测试再次失败。功能移植中，固定和反馈两组逐项持平。开发者实际节省多少时间仍待真人试用。其他项目、日期功能和失效案例见[公开技术报告](docs/technical-report-2026-11.pdf)。
 
-### 2) Run demo
-
-```bash
-python demo.py
-```
-
-### 3) Run tests
-
-```bash
-python -m unittest discover -s tests -v
-# or
-python -m pytest tests/ -v
-```
-
-### 4) Run experiments
-
-```bash
-cd experiments
-python run_experiment.py --rounds 3 --seed 42
-```
-
-Use external dataset:
-
-```bash
-python run_experiment.py --dataset-json ./benchmarks/expanded_tasks.json --rounds 3 --seed 42
-```
-
-Enable simulated latency for baseline behavior studies:
-
-```bash
-python run_experiment.py --rounds 1 --simulate-latency
-```
-
-When `--rounds > 1`, the generated report includes stability metrics (mean success rate, standard deviation, and 95% confidence interval across rounds).
-
-### 5) Run G1 (100+ tasks, fixed params)
-
-```bash
-cd experiments
-py run_g1_experiment.py --rebuild-dataset
-```
-
-This command will:
-- build a fixed `120`-task dataset at `experiments/benchmarks/g1_full_120_tasks.json`,
-- run the baseline comparison with frozen parameters,
-- write outputs to `results/`.
-
-Reference config file:
-- `experiments/experiment_params.g1.toml`
-
-### 6) Run G2 (multi-seed significance + effect size)
-
-```bash
-cd experiments
-py run_g2_analysis.py --seeds 11,22,33,44,55 --rounds 1
-```
-
-This command will:
-- run all baselines across multiple random seeds on the fixed dataset,
-- compute Mann-Whitney U significance and Cliff's delta effect sizes,
-- export `g2_stats_*.json` and `g2_stats_*_report.md` under `results/`.
-
-### 7) Run G3 (routing ablation)
-
-```bash
-cd experiments
-py run_g3_ablation.py --seeds 11,22,33 --rounds 1
-```
-
-This command will:
-- run route ablation scenarios (strategy disable + weight variants),
-- compare `ours_proposed_scheme` metrics across scenarios,
-- export `g3_ablation_*.json` and `g3_ablation_*_report.md` under `results/`.
-
-### 8) Experiment Process Log (new)
-
-All experiment entries now append a process/result record to `experiment_run_log.md` in the corresponding output directory.
-
-Included scripts:
-- `experiments/run_experiment.py`
-- `experiments/run_g1_experiment.py`
-- `experiments/run_g2_analysis.py`
-- `experiments/run_g3_ablation.py`
-
-Each record includes:
-- run timestamp and title,
-- full parameters,
-- output files and key result pointers.
-
-Output path notes:
-- For `run_g3_ablation.py`, default paths remain script-relative for backward compatibility.
-- If you pass custom relative paths (for example `--output-dir experiments/results` from repo root), they are resolved against the current working directory.
-
-### 9) Recommended Step-by-Step Workflow
-
-Use this order for stable reproducible validation:
-
-1) Core checks
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-2) G1 quick regression
-
-```bash
-py experiments/run_g1_experiment.py --rounds 1 --seed 11 --target-count 120 --output-dir experiments/results
-```
-
-3) G2 quick regression
-
-```bash
-py experiments/run_g2_analysis.py --seeds 11 --rounds 1 --output-dir experiments/results
-```
-
-4) G3 quick regression
-
-```bash
-py experiments/run_g3_ablation.py --seeds 11 --rounds 1 --scenarios full --output-dir experiments/results
-```
-
-5) Inspect process and result logs
-
-```bash
-Get-Content experiments/results/experiment_run_log.md -Tail 160
-```
-
-This gives a complete trace: parameters, outputs, and key metric pointers for each run.
-
-## Configuration
-
-SEED-A uses `config.toml` as the single configuration entry.
-
-Main sections:
-- `experience_graph`
-- `experience_manager`
-- `routing_engine`
-- `llm`
-- `redis`
-- `experiment`
-- `logging`
-
-## Experiment Template
-
-Recommended experiment parameter template:
-
-- `experiments/experiment_params.template.toml`
-
-Example reproducible run:
-
-```bash
-cd experiments
-python run_experiment.py --rounds 5 --seed 42 --dataset-json ./benchmarks/expanded_tasks.json --output-dir ../results
-```
-
-## Tech Stack
-
-- Python (core system, experiments, APIs)
-- TypeScript (VS Code extension prototype)
-- Pydantic, NumPy, scikit-learn, FastAPI, matplotlib
-
-## Development Notes
-
-- Generated artifacts (for example `results/`, `models/`, caches) are excluded by `.gitignore`.
-- Some local project documents are intentionally excluded from version control.
-
-## License
-
-MIT License
+[早期实验框架与使用说明](https://github.com/Unbantucniak/SEED-A/blob/f30e90eb3f815e2fa9ce7ede8f1d41f385784548/README.md)保留了原始模块、基线和开发记录。

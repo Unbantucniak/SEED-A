@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEED-A 本机经验库</title>
+<style>
+  :root {color-scheme:light;font:16px/1.65 "Segoe UI","Microsoft YaHei",sans-serif;color:#1c302f;background:#f5f7f6}
+  body {max-width:54rem;margin:2.5rem auto;padding:0 1.2rem}
+  main {padding:clamp(1.2rem,4vw,3rem);background:white;border:1px solid #cfdbd8;border-radius:8px}
+  h1 {margin:0 0 1.4rem;font-size:clamp(1.5rem,3vw,2rem)}h2 {font-size:1.35rem;margin:0 0 .7rem}
+  dl {display:grid;grid-template-columns:6rem 1fr;gap:.4rem 1rem} dt {color:#496661} dd {margin:0;overflow-wrap:anywhere}
+  pre {padding:1rem;background:#f0f5f3;border-left:3px solid #377768;white-space:pre-wrap;overflow-wrap:anywhere}
+  code {font:14px/1.7 Consolas,"Microsoft YaHei",monospace}a {color:#256454}li{margin:.5rem 0}
+  [hidden] {display:none!important}
+</style>
+<main>
+  <h1>SEED-A 本机经验库</h1>
+  <section id="draft" hidden>
+    <h2>从编辑器发送的代码草稿</h2>
+    <p id="message" role="status"></p>
+    <div id="detail" hidden>
+      <dl>
+        <dt>来源</dt><dd id="source"></dd>
+        <dt>源文件标签</dt><dd id="file"></dd>
+        <dt>项目范围</dt><dd id="scope"></dd>
+        <dt>版本</dt><dd id="version"></dd>
+        <dt>语言</dt><dd id="language"></dd>
+      </dl>
+      <pre><code id="snippet"></code></pre>
+      <p>回到 VS Code，选中这段代码，运行“SEED-A：用项目 pytest 验证并保存经验”，再选择本项目已有的测试文件。通过的测试收据随经验保存。</p>
+    </div>
+    <p><a href="/">返回经验列表</a></p>
+  </section>
+  <section id="library">
+    <h2>已保存经验（{{experience_count}}）</h2>
+    {{experience_rows}}
+    <p>请在 VS Code 中选择代码并运行项目测试，然后检索或复用已通过测试的片段。</p>
+  </section>
+</main>
+<script>
+  const byId = id => document.getElementById(id);
+  let revision = 0;
+  async function showDraft() {
+    const current = ++revision;
+    const [route, query] = location.hash.slice(1).split("?", 2);
+    const displayDraft = route === "workspace";
+    byId("draft").hidden = !displayDraft;
+    byId("library").hidden = displayDraft;
+    byId("detail").hidden = true;
+    for (const id of ["message","source","file","scope","version","language","snippet"]) byId(id).textContent = "";
+    if (!displayDraft) return;
+    const id = new URLSearchParams(query).get("draft");
+    if (!id || !/^[0-9a-f]{32}$/.test(id)) {
+      byId("message").textContent = "此链接缺少有效草稿编号。请在 VS Code 中重新发送选区。";
+      return;
+    }
+    byId("message").textContent = "正在读取本机草稿…";
+    try {
+      const response = await fetch("/api/workbench/drafts/" + encodeURIComponent(id));
+      if (!response.ok) throw new Error(String(response.status));
+      const row = await response.json();
+      if (current !== revision) return;
+      byId("source").textContent = row.source === "vscode" ? "VS Code" : row.source;
+      byId("file").textContent = row.file_label || "未提供";
+      byId("scope").textContent = row.scope;
+      byId("version").textContent = row.version;
+      byId("language").textContent = row.language;
+      byId("snippet").textContent = row.code;
+      byId("message").textContent = "已接收选区，等待项目测试。";
+      byId("detail").hidden = false;
+    } catch (err) {
+      if (current !== revision) return;
+      byId("message").textContent = err.message === "404"
+        ? "本机经验库中未找到此草稿。请在 VS Code 中重新发送选区。"
+        : "暂时无法读取本机草稿。请检查服务后刷新页面。";
+    }
+  }
+  window.addEventListener("hashchange", showDraft);
+  showDraft();
+</script>
+</html>

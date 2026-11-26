@@ -1,183 +1,375 @@
-import * as vscode from 'vscode';
-import axios from 'axios';
+import * as vscode from "vscode";
+import {
+  ExperienceSearchResult,
+  formatApiError,
+  Recommendation,
+  SeedaApiClient,
+} from "./apiClient";
+import { ExperienceViewProvider } from "./experienceView";
+import { memoryContext } from "./workspaceContext";
+import { registerProjectWorkflow } from "./projectWorkflow";
+import {
+  DEFAULT_WORKBENCH_URL, draftWorkspaceUrl, editorDraft, localWorkbenchUrl,
+  WorkbenchClient, workbenchError,
+} from "./workbenchClient";
 
-let apiEndpoint = vscode.workspace.getConfiguration('self-evolution-agent').get<string>('apiEndpoint', 'http://localhost:8000');
-let autoSave = vscode.workspace.getConfiguration('self-evolution-agent').get<boolean>('autoSaveExperience', true);
-let suggestionCount = vscode.workspace.getConfiguration('self-evolution-agent').get<number>('suggestionCount', 5);
-
-export function activate(context: vscode.ExtensionContext) {
-	console.log('自学习自演化智能助手插件已激活');
-
-	// 监听配置变更
-	vscode.workspace.onDidChangeConfiguration(e => {
-		if (e.affectsConfiguration('self-evolution-agent.apiEndpoint')) {
-			apiEndpoint = vscode.workspace.getConfiguration('self-evolution-agent').get<string>('apiEndpoint', 'http://localhost:8000');
-		}
-		if (e.affectsConfiguration('self-evolution-agent.autoSaveExperience')) {
-			autoSave = vscode.workspace.getConfiguration('self-evolution-agent').get<boolean>('autoSaveExperience', true);
-		}
-		if (e.affectsConfiguration('self-evolution-agent.suggestionCount')) {
-			suggestionCount = vscode.workspace.getConfiguration('self-evolution-agent').get<number>('suggestionCount', 5);
-		}
-	});
-
-	// 注册命令：搜索相关经验
-	let searchCommand = vscode.commands.registerCommand('self-evolution-agent.searchExperience', async () => {
-		const query = await vscode.window.showInputBox({
-			prompt: '输入搜索关键词，查找相关开发经验',
-			placeHolder: '例如：Python快速排序实现'
-		});
-		if (!query) { return; }
-
-		try {
-			const response = await axios.post(`${apiEndpoint}/api/experience/search`, { query });
-			const experiences = response.data;
-			
-			if (experiences.length === 0) {
-				vscode.window.showInformationMessage('未找到相关经验');
-				return;
-			}
-
-			// 展示搜索结果
-			const items = experiences.map((exp: any) => ({
-				label: `${exp.task_intent.task_type}: ${exp.task_intent.original_requirement.substring(0, 50)}`,
-				description: `成功率: ${(exp.dynamic_meta.success_rate * 100).toFixed(1)}% | 使用次数: ${exp.dynamic_meta.use_count}`,
-				detail: exp.execution_result.final_output.substring(0, 200),
-				experience: exp
-			}));
-
-			const selected = await vscode.window.showQuickPick(items, {
-				placeHolder: '选择要查看的经验',
-				matchOnDescription: true,
-				matchOnDetail: true
-			});
-
-			if (selected) {
-				// 打开经验详情
-				const doc = await vscode.workspace.openTextDocument({
-					content: `# 经验详情\n\n` +
-						`## 任务信息\n` +
-						`- 类型: ${selected.experience.task_intent.task_type}\n` +
-						`- 需求: ${selected.experience.task_intent.original_requirement}\n` +
-						`- 用户指令: ${selected.experience.task_intent.user_instruction}\n\n` +
-						`## 执行结果\n` +
-						`- 状态: ${selected.experience.execution_result.is_success ? '✅ 成功' : '❌ 失败'}\n` +
-						`- 执行耗时: ${selected.experience.execution_result.execution_time}s\n\n` +
-						`## 最终输出\n\`\`\`\n${selected.experience.execution_result.final_output}\n\`\`\`\n\n` +
-						`## 元属性\n` +
-						`- 成功率: ${(selected.experience.dynamic_meta.success_rate * 100).toFixed(1)}%\n` +
-						`- 使用次数: ${selected.experience.dynamic_meta.use_count}\n` +
-						`- 时效性: ${(selected.experience.dynamic_meta.timeliness * 100).toFixed(1)}%\n` +
-						`- 通用性: ${(selected.experience.static_meta.generalization * 100).toFixed(1)}%`,
-					language: 'markdown'
-				});
-				await vscode.window.showTextDocument(doc);
-			}
-		} catch (error) {
-			vscode.window.showErrorMessage(`搜索经验失败: ${(error as Error).message}`);
-		}
-	});
-
-	// 注册命令：保存当前经验
-	let saveCommand = vscode.commands.registerCommand('self-evolution-agent.saveCurrentExperience', async () => {
-		const editor = vscode.window.activeTextEditor;
-		if (!editor) {
-			vscode.window.showErrorMessage('没有打开的文本编辑器');
-			return;
-		}
-
-		const requirement = await vscode.window.showInputBox({
-			prompt: '输入该经验对应的需求描述',
-			placeHolder: '例如：实现快速排序函数'
-		});
-		if (!requirement) { return; }
-
-		const code = editor.document.getText(editor.selection) || editor.document.getText();
-		
-		try {
-			await axios.post(`${apiEndpoint}/api/experience/add`, {
-				original_requirement: requirement,
-				user_instruction: requirement,
-				task_type: '代码生成',
-				final_output: code,
-				is_success: true,
-				execution_time: 1.0,
-				source_credibility: 1.0
-			});
-			vscode.window.showInformationMessage('经验保存成功！');
-		} catch (error) {
-			vscode.window.showErrorMessage(`保存经验失败: ${(error as Error).message}`);
-		}
-	});
-
-	// 注册命令：基于当前编辑上下文实时推荐经验
-	let recommendCommand = vscode.commands.registerCommand('self-evolution-agent.recommendExperience', async () => {
-		const editor = vscode.window.activeTextEditor;
-		if (!editor) {
-			vscode.window.showErrorMessage('没有打开的文本编辑器');
-			return;
-		}
-
-		const selectedText = editor.document.getText(editor.selection).trim();
-		const currentLine = editor.document.lineAt(editor.selection.active.line).text.trim();
-		const currentCode = selectedText || currentLine;
-
-		if (!currentCode) {
-			vscode.window.showWarningMessage('当前上下文为空，请先选中代码或将光标移动到目标语句行');
-			return;
-		}
-
-		try {
-			const response = await axios.post(`${apiEndpoint}/api/experience/recommend`, {
-				current_code: currentCode,
-				language: editor.document.languageId,
-				top_k: suggestionCount
-			});
-			const recommendations = response.data;
-
-			if (!recommendations || recommendations.length === 0) {
-				vscode.window.showInformationMessage('未命中可推荐经验');
-				return;
-			}
-
-			const items = recommendations.map((item: any) => ({
-				label: `${item.task_type}: ${String(item.requirement || '').substring(0, 50)}`,
-				description: `匹配度: ${(item.similarity * 100).toFixed(1)}% | 综合分: ${(item.composite_score * 100).toFixed(1)}%`,
-				detail: String(item.suggestion || '').substring(0, 200),
-				recommendation: item
-			}));
-
-			const selected = await vscode.window.showQuickPick(items, {
-				placeHolder: '选择要查看或复用的经验建议',
-				matchOnDescription: true,
-				matchOnDetail: true
-			});
-
-			if (selected) {
-				const doc = await vscode.workspace.openTextDocument({
-					content: `# 实时经验推荐\n\n` +
-						`- 任务类型: ${selected.recommendation.task_type}\n` +
-						`- 需求: ${selected.recommendation.requirement}\n` +
-						`- 匹配度: ${(selected.recommendation.similarity * 100).toFixed(1)}%\n` +
-						`- 综合分: ${(selected.recommendation.composite_score * 100).toFixed(1)}%\n\n` +
-						`## 推荐内容\n\n\`\`\`\n${selected.recommendation.suggestion}\n\`\`\`\n`,
-					language: 'markdown'
-				});
-				await vscode.window.showTextDocument(doc);
-			}
-		} catch (error) {
-			vscode.window.showErrorMessage(`获取推荐失败: ${(error as Error).message}`);
-		}
-	});
-
-	// 注册命令：打开经验库面板
-	let showLibraryCommand = vscode.commands.registerCommand('self-evolution-agent.showExperienceLibrary', () => {
-		vscode.commands.executeCommand('workbench.view.extension.self-evolution-agent');
-	});
-
-	context.subscriptions.push(searchCommand, saveCommand, recommendCommand, showLibraryCommand);
+function configuration(uri = vscode.window.activeTextEditor?.document.uri): {
+  endpoint: string;
+  timeoutMs: number;
+  suggestionCount: number;
+  scope: string;
+  version: string;
+} {
+  const config = vscode.workspace.getConfiguration("seeda", uri);
+  const memory = memoryContext(uri);
+  return {
+    endpoint: localWorkbenchUrl(config.get<string>("workbenchUrl", DEFAULT_WORKBENCH_URL)),
+    timeoutMs: config.get<number>("requestTimeoutMs", 10_000),
+    suggestionCount: config.get<number>("suggestionCount", 5),
+    scope: memory.scope,
+    version: memory.version,
+  };
 }
 
-export function deactivate() {
-	console.log('自学习自演化智能助手插件已停用');
+function client(context: vscode.ExtensionContext, uri?: vscode.Uri): SeedaApiClient {
+  const config = configuration(uri);
+  return new SeedaApiClient(
+    config.endpoint,
+    config.timeoutMs,
+    context.secrets, config.scope, config.version,
+  );
+}
+
+export function activate(context: vscode.ExtensionContext): void {
+  const output = vscode.window.createOutputChannel("SEED-A");
+  const status = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    20,
+  );
+  status.command = "seeda.openWorkbench";
+  status.text = "$(database) SEED-A";
+  status.tooltip = "打开 SEED-A 研发工作台";
+  status.show();
+
+  const provider = new ExperienceViewProvider(
+    context.extensionUri,
+    () => client(context),
+  );
+  registerProjectWorkflow(context, uri => client(context, uri), output);
+  context.subscriptions.push(
+    output,
+    status,
+    vscode.window.registerWebviewViewProvider(
+      ExperienceViewProvider.viewType,
+      provider,
+    ),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("seeda.openWorkbench", async () => {
+      let endpoint = DEFAULT_WORKBENCH_URL;
+      try {
+        const config = configuration();
+        endpoint = config.endpoint;
+        const workbench = new WorkbenchClient(endpoint, config.timeoutMs, context.secrets);
+        await workbench.checkConnection();
+        if (!await vscode.env.openExternal(vscode.Uri.parse(endpoint))) {
+          throw new Error("未能打开浏览器，请手动打开本机研发工作台地址");
+        }
+      } catch (error) {
+        const choice = await vscode.window.showErrorMessage(workbenchError(error, endpoint), "启动本地服务");
+        if (choice) await vscode.commands.executeCommand("seeda.startWorkbench");
+      }
+    }),
+    vscode.commands.registerCommand("seeda.sendSelectionToWorkbench", async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        void vscode.window.showWarningMessage("请先打开代码文件或选择要发送的代码");
+        return;
+      }
+      let endpoint = DEFAULT_WORKBENCH_URL;
+      try {
+        const config = configuration();
+        endpoint = config.endpoint;
+        const selectedCode = editor.selection.isEmpty
+          ? editor.document.getText() : editor.document.getText(editor.selection);
+        const draft = editorDraft(selectedCode, editor.document.fileName, editor.document.languageId, config);
+        const workbench = new WorkbenchClient(endpoint, config.timeoutMs, context.secrets);
+        const draftId = await vscode.window.withProgress({
+          location: vscode.ProgressLocation.Notification, title: "SEED-A 正在保存工作台草稿",
+        }, () => workbench.saveDraft(draft));
+        output.appendLine(`工作台草稿 ${draftId}：${draft.file_label}（${draft.code.length} 字符）`);
+        const target = draftWorkspaceUrl(endpoint, draftId);
+        if (!await vscode.env.openExternal(vscode.Uri.parse(target))) {
+          void vscode.window.showWarningMessage(`草稿已保存，请手动打开 ${target}`);
+          return;
+        }
+        void vscode.window.showInformationMessage("代码已保存到本机工作台草稿，请补充任务要求和测试后运行");
+      } catch (error) {
+        void vscode.window.showErrorMessage(workbenchError(error, endpoint));
+      }
+    }),
+    vscode.commands.registerCommand("seeda.checkConnection", async () => {
+      status.text = "$(sync~spin) SEED-A";
+      try {
+        const health = await client(context).health();
+        status.text = `$(database) SEED-A ${health.total_experiences}`;
+        status.tooltip = "共享研发工作台连接正常";
+        void vscode.window.showInformationMessage(
+          `SEED-A 共享工作台连接正常，经验记录 ${health.total_experiences}`,
+        );
+      } catch (error) {
+        status.text = "$(error) SEED-A";
+        status.tooltip = formatApiError(error);
+        void vscode.window.showErrorMessage(formatApiError(error));
+      }
+    }),
+    vscode.commands.registerCommand("seeda.configureApiKey", async () => {
+      const value = await vscode.window.showInputBox({
+        title: "配置 SEED-A 后端 API Key",
+        password: true,
+        ignoreFocusOut: true,
+        prompt: "密钥仅保存在 VS Code SecretStorage 中；留空并确认可删除现有密钥",
+      });
+      if (value === undefined) {
+        return;
+      }
+      if (value) {
+        await context.secrets.store("seeda.apiKey", value);
+        void vscode.window.showInformationMessage("SEED-A API Key 已安全保存");
+      } else {
+        await context.secrets.delete("seeda.apiKey");
+        void vscode.window.showInformationMessage("SEED-A API Key 已删除");
+      }
+    }),
+    vscode.commands.registerCommand("seeda.refreshLibrary", async () => {
+      await provider.refresh();
+    }),
+    vscode.commands.registerCommand("seeda.searchExperience", async (options?: {query?: string; returnResults?: boolean}) => {
+      const query = options?.query ?? await vscode.window.showInputBox({
+        title: "搜索开发经验",
+        prompt: "输入任务、错误信息、API 或项目约定",
+        placeHolder: "例如：FastAPI 鉴权失败",
+      });
+      if (!query) {
+        return;
+      }
+      try {
+        const results = await vscode.window.withProgress(
+          {
+            location: vscode.ProgressLocation.Notification,
+            title: "SEED-A 正在检索经验",
+          },
+          () => client(context).search(query, configuration().suggestionCount),
+        );
+        if (options?.returnResults) return results;
+        await showSearchResults(results);
+      } catch (error) {
+        void vscode.window.showErrorMessage(formatApiError(error));
+      }
+    }),
+    vscode.commands.registerCommand(
+      "seeda.recommendExperience",
+      async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+          void vscode.window.showWarningMessage("请先打开代码文件");
+          return;
+        }
+        const selected = editor.document.getText(editor.selection).trim();
+        const line = editor.document
+          .lineAt(editor.selection.active.line)
+          .text.trim();
+        const currentCode = selected || line;
+        if (!currentCode) {
+          void vscode.window.showWarningMessage("请选择代码或将光标置于目标代码行");
+          return;
+        }
+        try {
+          const results = await client(context).recommend(
+            currentCode,
+            editor.document.languageId,
+            configuration().suggestionCount,
+          );
+          await showRecommendations(results);
+        } catch (error) {
+          void vscode.window.showErrorMessage(formatApiError(error));
+        }
+      },
+    ),
+    vscode.commands.registerCommand("seeda.saveCurrentExperience", async () => {
+      await vscode.commands.executeCommand("seeda.sendSelectionToWorkbench");
+    }),
+    vscode.commands.registerCommand("seeda.feedbackExperience", async () => {
+      try {
+        const api = client(context);
+        const experiences = await api.experiences();
+        if (!experiences.length) {
+          void vscode.window.showInformationMessage("当前作用域及版本没有可反馈的活跃经验，请先在工作台完成带测试的任务");
+          return;
+        }
+        const selected = await vscode.window.showQuickPick(experiences.map(item => ({
+          label: item.title || item.requirement.slice(0, 80), description: `${item.scope} / ${item.version}`,
+          detail: item.id, item,
+        })), { title: "选择要反馈的共享工作台经验" });
+        if (!selected) return;
+        const outcome = await vscode.window.showQuickPick([
+          { label: "复用成功", success: true },
+          { label: "复用失败，归档以供复核", success: false },
+        ], { title: "人工反馈（单独记录，不替代机器测试证据）" });
+        if (!outcome) return;
+        const note = await vscode.window.showInputBox({ title: "填写复用反馈", ignoreFocusOut: true,
+          prompt: "描述使用场景与结果，最多1200字符", validateInput: value =>
+            !value.trim() ? "请填写具体反馈" : value.length > 1200 ? "最多1200字符" : undefined });
+        if (!note?.trim()) return;
+        await api.feedback(selected.item.id, outcome.success, note.trim());
+        void vscode.window.showInformationMessage("人工反馈已记录到共享工作台经验");
+        await provider.refresh();
+      } catch (error) {
+        void vscode.window.showErrorMessage(formatApiError(error));
+      }
+    }),
+    vscode.commands.registerCommand("seeda.runLifecycle", async () => {
+      const answer = await vscode.window.showWarningMessage(
+        "将归档失效经验并生成待测试的参数模板，是否继续？",
+        { modal: true },
+        "运行",
+      );
+      if (answer !== "运行") {
+        return;
+      }
+      try {
+        const result = await vscode.window.withProgress(
+          {
+            location: vscode.ProgressLocation.Notification,
+            title: "SEED-A 正在维护经验库",
+          },
+          () => client(context).runLifecycle(),
+        );
+        output.appendLine(JSON.stringify(result, null, 2));
+        const failedStages = ["archival", "generalization"].filter(
+          (stage) => {
+            const summary = result[stage];
+            return summary !== null && typeof summary === "object" &&
+              "error" in summary;
+          },
+        );
+        if (failedStages.length) {
+          void vscode.window.showWarningMessage(
+            `生命周期维护部分失败（${failedStages.join("、")}），请查看 SEED-A 输出面板`,
+          );
+        } else {
+          void vscode.window.showInformationMessage(
+            "生命周期维护完成，详细结果已写入 SEED-A 输出面板",
+          );
+        }
+        await provider.refresh();
+      } catch (error) {
+        void vscode.window.showErrorMessage(formatApiError(error));
+      }
+    }),
+  );
+
+  // Connect on demand: opening an editor must not trigger a server-start error.
+}
+
+async function showSearchResults(
+  results: ExperienceSearchResult[],
+): Promise<void> {
+  if (results.length === 0) {
+    void vscode.window.showInformationMessage("未找到相关经验");
+    return;
+  }
+  const selected = await vscode.window.showQuickPick(
+    results.map((item) => ({
+      label: item.task_intent.original_requirement.slice(0, 80),
+      description: `${item.task_intent.task_type} · 综合分 ${item.composite_score.toFixed(3)}`,
+      detail: item.execution_result.final_output.slice(0, 180),
+      item,
+    })),
+    { title: "SEED-A 经验检索结果", matchOnDescription: true, matchOnDetail: true },
+  );
+  if (!selected) {
+    return;
+  }
+  await openMarkdown(
+    `# SEED-A 经验详情
+
+- 经验 ID：\`${selected.item.experience_id}\`
+- 任务类型：${selected.item.task_intent.task_type}
+- 检索相似度：${selected.item.similarity.toFixed(3)}
+- 综合分：${selected.item.composite_score.toFixed(3)}
+- 成功率元数据：${selected.item.dynamic_meta.success_rate.toFixed(3)}${selected.item.dynamic_meta.use_count === 0 ? "（尚无复用记录）" : ""}
+- 使用次数：${selected.item.dynamic_meta.use_count}
+
+## 原始需求
+
+${selected.item.task_intent.original_requirement}
+
+## 来源与验证记录
+
+${selected.item.task_intent.user_instruction ?? "该经验未附加人工验证记录"}
+
+## 经验输出
+
+\`\`\`
+${selected.item.execution_result.final_output}
+\`\`\`
+`,
+  );
+}
+
+async function showRecommendations(
+  results: Recommendation[],
+): Promise<void> {
+  if (results.length === 0) {
+    void vscode.window.showInformationMessage("当前上下文没有命中可用经验");
+    return;
+  }
+  const selected = await vscode.window.showQuickPick(
+    results.map((item) => ({
+      label: item.requirement.slice(0, 80),
+      description: `${item.task_type} · 匹配 ${item.similarity.toFixed(3)}`,
+      detail: item.suggestion.slice(0, 180),
+      item,
+    })),
+    { title: "SEED-A 上下文经验推荐", matchOnDetail: true },
+  );
+  if (!selected) {
+    return;
+  }
+  await openMarkdown(
+    `# SEED-A 上下文推荐
+
+- 经验 ID：\`${selected.item.experience_id}\`
+- 相似度：${selected.item.similarity.toFixed(3)}
+- 综合分：${selected.item.composite_score.toFixed(3)}
+
+## 对应需求
+
+${selected.item.requirement}
+
+## 来源和测试
+
+${selected.item.provenance || "该条经验尚无可展示的来源详情。"}
+
+## 推荐内容
+
+\`\`\`
+${selected.item.suggestion}
+\`\`\`
+`,
+  );
+}
+
+async function openMarkdown(content: string): Promise<void> {
+  const document = await vscode.workspace.openTextDocument({
+    content,
+    language: "markdown",
+  });
+  await vscode.window.showTextDocument(document, { preview: true });
+}
+
+export function deactivate(): void {
+  // VS Code disposes all registered resources through context.subscriptions.
 }

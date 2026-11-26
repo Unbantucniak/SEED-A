@@ -1,0 +1,10 @@
+.vscode/**
+.vscode-test/**
+src/**
+backend/**
+tests/**
+dist/**
+**/*.map
+**/__pycache__/**
+tsconfig.json
+package-lock.json
